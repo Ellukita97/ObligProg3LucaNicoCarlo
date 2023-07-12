@@ -5,13 +5,10 @@
 
 <PageTitle> Peliculas</PageTitle>
 
-
-<h3>Peliculas</h3>
 @if (ListaPeliculas == null)
 {
     <div class="d-flex justify-content-center align-self-center h-100">
-        <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
+        <div class="spinner-border  text-light" role="status">
         </div>
     </div>
 }
@@ -19,36 +16,46 @@ else
 {
     <div class="Maincontainer">
         <div>
+            <div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Generos</a>
+    </div>
+</div>
 
+<div class="sidebar">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
         </div>
-        <div class="ContainerPeliculas">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Usuarios Gestión
+            </NavLink>
+        </div>
+    </nav>
+</div>
+        </div>
+        <div class="ContainerPeliculas">   
        
-       
                     @foreach (Pelicula item in ListaPeliculas)
                     {
                         <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
                     }
-                    @foreach (Pelicula item in ListaPeliculas)
-                    {
-                        <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
-                    }
-                    @foreach (Pelicula item in ListaPeliculas)
-                    {
-                        <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
-                    }
-                    @foreach (Pelicula item in ListaPeliculas)
-                    {
-                        <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
-                    }
-        
-
-
         </div>
                 <div class="Details2">
                     <div class="Details">
                         <img src="@peliculaSeleccionada?.PeliculaUrlImagen" class="imagePelicula"/>
                             <div class="ContainerInfoPelicula">
                                 <h2 class="TituloPelicula">@peliculaSeleccionada?.Nombre</h2>
+                                <small>Genero @peliculaSeleccionada?.Sinopsis</small>
+                                <span>calificacion: @peliculaSeleccionada?.Clasificacion</span>
                             </div>
                     </div>
                 </div>
@@ -94,18 +101,18 @@ else
         transform:scale(1.05);
     }
     .Details{
-        min-width:560px;
+        min-width:460px;
         position: fixed;
-        padding:0px 40px 0px 40px;
-        height:800px;
+        height:820px;
         right:0;
         overflow:hidden;
+        
     }
     .Details2{
         min-width:435px;
         display:flex;
         align-items:center;
-        height:88vh;
+        height:85vh;
         justify-content:center;
     }
     .Maincontainer{
@@ -125,13 +132,16 @@ else
         filter: blur(4px) brightness(70%);
         opacity:1.5;
         z-index:-1;
+        
     }
     .ContainerInfoPelicula{
         position:absolute;
         z-index:100;
-        top: 0px;
-        left:70px;
+        top: 30px;
+        left:55px;
         color:white;
+        display:flex;
+        flex-direction:column;
     }
 
 

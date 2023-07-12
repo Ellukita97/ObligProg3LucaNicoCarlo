@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Page1.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BlazorStrap" Version="5.1.102.51923" />
     <PackageReference Include="BlazorStrap.V5" Version="5.1.102.51723" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.18" />

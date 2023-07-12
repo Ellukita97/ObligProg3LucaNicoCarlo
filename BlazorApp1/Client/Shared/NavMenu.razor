@@ -1,39 +1,56 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorApp1</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+﻿<nav class="fixed-top">
+    <nav>
+        <div class="d-flex item-nav-menu justify-content-between">
+            <div >
+                <section>
+                    <a href="/">
+                        <img src="./image1.png" class="ImageLogo" />
+                    </a>
+                </section>
+            </div>
+            <div class="">
+                <a href="/Peliculas">Peliculas</a>
+                <a href="#">About</a>
+                <a href="#">About</a>
+            </div>
+            <div class="search">
+                <a href="#">search</a>
+            </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Usuarios Gestión
-            </NavLink>
         </div>
     </nav>
-</div>
+  </nav>
+  <div class="nav-space">
 
-@code {
-    private bool collapseNavMenu = true;
+  </div>
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
+
+<style>
+    .item-nav-menu{
+        width:100vw;
+        background-color:black;
     }
-}
+    .item-nav-menu div a{
+        color:white;
+        text-decoration:none;
+        font-size:25px;
+        padding:10px;
+        margin:10px;
+    }
+    .nav-space{
+        margin-top:110px;
+    }
+    .ImageLogo{
+        height:100px;
+        width: 170px;
+        border-radius:15px;
+    }
+    .item-nav-menu div{
+        display: flex;
+        align-items:center;
+    }
+    .search{
+        margin-right: 10px;
+    }
+</style>
