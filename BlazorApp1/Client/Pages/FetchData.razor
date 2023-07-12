@@ -1,0 +1,91 @@
+﻿@page "/fetchdata"
+@using BlazorApp1.Shared
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>Lista Usuarios</PageTitle>
+
+<h1>Usuarios</h1>
+
+
+@if (ListaUsuarios == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ListaUsuarios)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Nombre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div class="text-lowercase">
+    <h2>INGRESO Y MODIFICACION DE USUARIOS</h2>
+        
+        <input type="text" placeholder="Ingrese un Nombre" id="Input-Nombre" @onchange="HandleNombre">
+        <button @onclick="Ingreso"> Ingreso de usuario </button>
+
+       
+    </div>
+}
+
+
+@code {
+    private List<Usuario> ListaUsuarios;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaUsuarios = await Http.GetFromJsonAsync<List<Usuario>>("api/usuarios");
+    }
+
+
+    private string ingresoNombre = "";
+
+    private void HandleNombre(ChangeEventArgs e)
+    {
+        ingresoNombre = e.Value.ToString();
+    }
+
+
+
+    private async Task Ingreso()
+    {
+        if(ingresoNombre != null)
+        {
+            Usuario user = new Usuario
+                {
+                    Nombre = ingresoNombre,
+                };
+
+            var HttpRequest = await Http.PostAsJsonAsync("api/usuarios/ingresar", user);
+
+            if (HttpRequest.IsSuccessStatusCode)
+            {
+                var createdUser = await HttpRequest.Content.ReadFromJsonAsync<Usuario>();
+                ListaUsuarios.Add(createdUser);
+                StateHasChanged();
+            }
+            
+
+        }
+    }
+
+   
+
+
+}

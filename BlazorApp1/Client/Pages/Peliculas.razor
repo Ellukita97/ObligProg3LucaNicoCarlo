@@ -1,0 +1,138 @@
+﻿@page "/peliculas"
+@using BlazorApp1.Shared
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle> Peliculas</PageTitle>
+
+
+<h3>Peliculas</h3>
+@if (ListaPeliculas == null)
+{
+    <div class="d-flex justify-content-center align-self-center h-100">
+        <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="Maincontainer">
+        <div>
+
+        </div>
+        <div class="ContainerPeliculas">
+       
+       
+                    @foreach (Pelicula item in ListaPeliculas)
+                    {
+                        <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
+                    }
+                    @foreach (Pelicula item in ListaPeliculas)
+                    {
+                        <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
+                    }
+                    @foreach (Pelicula item in ListaPeliculas)
+                    {
+                        <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
+                    }
+                    @foreach (Pelicula item in ListaPeliculas)
+                    {
+                        <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
+                    }
+        
+
+
+        </div>
+                <div class="Details2">
+                    <div class="Details">
+                        <img src="@peliculaSeleccionada?.PeliculaUrlImagen" class="imagePelicula"/>
+                            <div class="ContainerInfoPelicula">
+                                <h2 class="TituloPelicula">@peliculaSeleccionada?.Nombre</h2>
+                            </div>
+                    </div>
+                </div>
+
+    </div>
+}
+
+@code {
+    private static List<Pelicula>? ListaPeliculas;
+
+    private Pelicula? peliculaSeleccionada;
+
+    private void SeleccionarPelicula (int id)
+    {
+
+        foreach (Pelicula item in ListaPeliculas)
+        {
+            if (item.IdPelicula == id)
+            {
+                peliculaSeleccionada = item;
+                StateHasChanged();
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaPeliculas = await Http.GetFromJsonAsync<List<Pelicula>>("api/peliculas");
+        peliculaSeleccionada = ListaPeliculas?[0];
+        StateHasChanged();
+    }
+}
+
+
+<style>
+    .Peliculas{
+        height: 400px;
+        width: 250px;
+        margin:8px;
+        cursor:pointer;
+    }
+    .Peliculas:hover{
+        transform:scale(1.05);
+    }
+    .Details{
+        min-width:560px;
+        position: fixed;
+        padding:0px 40px 0px 40px;
+        height:800px;
+        right:0;
+        overflow:hidden;
+    }
+    .Details2{
+        min-width:435px;
+        display:flex;
+        align-items:center;
+        height:88vh;
+        justify-content:center;
+    }
+    .Maincontainer{
+        min-height:90vh;
+        display:flex;
+        justify-content:space-between;
+    }
+    .containerPeliculas{
+        display:flex;
+        flex-wrap:wrap;
+    }
+    .imagePelicula{
+        width:435px;
+        height:88vh;
+        background-size:cover;
+        margin-left:20px;
+        filter: blur(4px) brightness(70%);
+        opacity:1.5;
+        z-index:-1;
+    }
+    .ContainerInfoPelicula{
+        position:absolute;
+        z-index:100;
+        top: 0px;
+        left:70px;
+        color:white;
+    }
+
+
+</style>
