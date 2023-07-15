@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp1.Shared
 {
@@ -13,7 +8,8 @@ namespace BlazorApp1.Shared
         public int IdGenero { get; set; }
         [Required]
         public string? Nombre { get; set; }
-        [Required]
-        public string? DescGenero { get; set; }
+
+        //Para relación muchos a muchos
+        public ICollection<GeneroPelicula>? GeneroPelicula { get; set; }
     }
 }

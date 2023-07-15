@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BlazorApp1.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDatabaseBlazor : Migration
+    public partial class databaseFinished : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,9 @@ namespace BlazorApp1.Server.Migrations
                 {
                     IdPelicula = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PeliculaUrlImagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PeliculaUrlPortada = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sinopsis = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Clasificacion = table.Column<float>(type: "real", nullable: false)
                 },
@@ -60,10 +62,10 @@ namespace BlazorApp1.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contrasenia = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Fecha_Registro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TipoUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Tel = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -73,28 +75,54 @@ namespace BlazorApp1.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GeneroPelicula",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GeneroId = table.Column<int>(type: "int", nullable: false),
+                    PeliculaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeneroPelicula", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GeneroPelicula_Generos_GeneroId",
+                        column: x => x.GeneroId,
+                        principalTable: "Generos",
+                        principalColumn: "IdGenero",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GeneroPelicula_Peliculas_PeliculaId",
+                        column: x => x.PeliculaId,
+                        principalTable: "Peliculas",
+                        principalColumn: "IdPelicula",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Proyecciones",
                 columns: table => new
                 {
                     ProyeccionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PeliculaIdPelicula = table.Column<int>(type: "int", nullable: false),
+                    PeliculaId = table.Column<int>(type: "int", nullable: false),
                     FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SalaIdSala = table.Column<int>(type: "int", nullable: false),
+                    SalaId = table.Column<int>(type: "int", nullable: false),
                     Monto = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Proyecciones", x => x.ProyeccionId);
                     table.ForeignKey(
-                        name: "FK_Proyecciones_Peliculas_PeliculaIdPelicula",
-                        column: x => x.PeliculaIdPelicula,
+                        name: "FK_Proyecciones_Peliculas_PeliculaId",
+                        column: x => x.PeliculaId,
                         principalTable: "Peliculas",
                         principalColumn: "IdPelicula",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Proyecciones_Salas_SalaIdSala",
-                        column: x => x.SalaIdSala,
+                        name: "FK_Proyecciones_Salas_SalaId",
+                        column: x => x.SalaId,
                         principalTable: "Salas",
                         principalColumn: "IdSala",
                         onDelete: ReferentialAction.Cascade);
@@ -106,34 +134,57 @@ namespace BlazorApp1.Server.Migrations
                 {
                     IdBoleto = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
+                    IdProyeccion = table.Column<int>(type: "int", nullable: false),
+                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdAsiento = table.Column<int>(type: "int", nullable: false),
                     Asiento = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BoletosCompras", x => x.IdBoleto);
                     table.ForeignKey(
-                        name: "FK_BoletosCompras_Usuarios_UsuarioId",
-                        column: x => x.UsuarioId,
+                        name: "FK_BoletosCompras_Proyecciones_IdProyeccion",
+                        column: x => x.IdProyeccion,
+                        principalTable: "Proyecciones",
+                        principalColumn: "ProyeccionId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BoletosCompras_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BoletosCompras_UsuarioId",
+                name: "IX_BoletosCompras_IdProyeccion",
                 table: "BoletosCompras",
-                column: "UsuarioId");
+                column: "IdProyeccion");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Proyecciones_PeliculaIdPelicula",
-                table: "Proyecciones",
-                column: "PeliculaIdPelicula");
+                name: "IX_BoletosCompras_IdUsuario",
+                table: "BoletosCompras",
+                column: "IdUsuario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Proyecciones_SalaIdSala",
+                name: "IX_GeneroPelicula_GeneroId",
+                table: "GeneroPelicula",
+                column: "GeneroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeneroPelicula_PeliculaId",
+                table: "GeneroPelicula",
+                column: "PeliculaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Proyecciones_PeliculaId",
                 table: "Proyecciones",
-                column: "SalaIdSala");
+                column: "PeliculaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Proyecciones_SalaId",
+                table: "Proyecciones",
+                column: "SalaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_Email",
@@ -149,13 +200,16 @@ namespace BlazorApp1.Server.Migrations
                 name: "BoletosCompras");
 
             migrationBuilder.DropTable(
-                name: "Generos");
+                name: "GeneroPelicula");
 
             migrationBuilder.DropTable(
                 name: "Proyecciones");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Generos");
 
             migrationBuilder.DropTable(
                 name: "Peliculas");

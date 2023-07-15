@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorApp1.Shared
 {
@@ -12,14 +8,16 @@ namespace BlazorApp1.Shared
         [Key]
         public int IdBoleto { get; set; }
 
-        //Relacion entre una tabla con otra cuya clave primaria esta formada por mas de un campo
-        /*
-        [Required]
-        public Proyeccion? Proyeccion { get; set; } 
-        */
-        [Required]
+        [ForeignKey(nameof(Proyeccion))]
+        public int IdProyeccion { get; set; }
+        public Proyeccion? Proyeccion { get; set; }
+
+        [ForeignKey(nameof(Usuario))]
+        public int IdUsuario { get; set; }
         public Usuario? Usuario { get; set; }
-        [Required]
+
+        [ForeignKey(nameof(Asiento))]
+        public int IdAsiento { get; set; }
         public int Asiento { get; set; }
     }
 }

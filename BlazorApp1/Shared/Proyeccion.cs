@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorApp1.Shared
 {
@@ -12,16 +8,18 @@ namespace BlazorApp1.Shared
         [Key]
         public int ProyeccionId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(Pelicula))]
+        public int PeliculaId { get; set; }
         public Pelicula? Pelicula { get; set; }
 
-        [Required]
         public DateTime FechaHora { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(Sala))]
+        public int SalaId { get; set; }
         public Sala? Sala { get; set; }
 
         [Required]
+        [Range(0, int.MaxValue)]
         public int Monto { get; set; }
     }
 }

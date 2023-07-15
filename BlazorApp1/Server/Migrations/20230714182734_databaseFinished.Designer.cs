@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorApp1.Server.Migrations
 {
     [DbContext(typeof(DbContextBlazor))]
-    [Migration("20230711194439_DatabaseBlazorImagen")]
-    partial class DatabaseBlazorImagen
+    [Migration("20230714182734_databaseFinished")]
+    partial class databaseFinished
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,12 +36,20 @@ namespace BlazorApp1.Server.Migrations
                     b.Property<int>("Asiento")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int>("IdAsiento")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdProyeccion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
                     b.HasKey("IdBoleto");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("IdProyeccion");
+
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("BoletosCompras");
                 });
@@ -67,6 +75,29 @@ namespace BlazorApp1.Server.Migrations
                     b.ToTable("Generos");
                 });
 
+            modelBuilder.Entity("BlazorApp1.Shared.GeneroPelicula", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GeneroId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeliculaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GeneroId");
+
+                    b.HasIndex("PeliculaId");
+
+                    b.ToTable("GeneroPelicula");
+                });
+
             modelBuilder.Entity("BlazorApp1.Shared.Pelicula", b =>
                 {
                     b.Property<int>("IdPelicula")
@@ -83,6 +114,10 @@ namespace BlazorApp1.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PeliculaUrlImagen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PeliculaUrlPortada")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -108,17 +143,17 @@ namespace BlazorApp1.Server.Migrations
                     b.Property<int>("Monto")
                         .HasColumnType("int");
 
-                    b.Property<int>("PeliculaIdPelicula")
+                    b.Property<int>("PeliculaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SalaIdSala")
+                    b.Property<int>("SalaId")
                         .HasColumnType("int");
 
                     b.HasKey("ProyeccionId");
 
-                    b.HasIndex("PeliculaIdPelicula");
+                    b.HasIndex("PeliculaId");
 
-                    b.HasIndex("SalaIdSala");
+                    b.HasIndex("SalaId");
 
                     b.ToTable("Proyecciones");
                 });
@@ -147,10 +182,6 @@ namespace BlazorApp1.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Contrasenia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -165,11 +196,15 @@ namespace BlazorApp1.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tel")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TipoUsuario")
+                    b.Property<string>("Rol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -183,32 +218,69 @@ namespace BlazorApp1.Server.Migrations
 
             modelBuilder.Entity("BlazorApp1.Shared.BoletoCompra", b =>
                 {
-                    b.HasOne("BlazorApp1.Shared.Usuario", "Usuario")
+                    b.HasOne("BlazorApp1.Shared.Proyeccion", "Proyeccion")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .HasForeignKey("IdProyeccion")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BlazorApp1.Shared.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Proyeccion");
+
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("BlazorApp1.Shared.GeneroPelicula", b =>
+                {
+                    b.HasOne("BlazorApp1.Shared.Genero", "Genero")
+                        .WithMany("GeneroPelicula")
+                        .HasForeignKey("GeneroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorApp1.Shared.Pelicula", "Pelicula")
+                        .WithMany("GeneroPelicula")
+                        .HasForeignKey("PeliculaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genero");
+
+                    b.Navigation("Pelicula");
                 });
 
             modelBuilder.Entity("BlazorApp1.Shared.Proyeccion", b =>
                 {
                     b.HasOne("BlazorApp1.Shared.Pelicula", "Pelicula")
                         .WithMany()
-                        .HasForeignKey("PeliculaIdPelicula")
+                        .HasForeignKey("PeliculaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BlazorApp1.Shared.Sala", "Sala")
                         .WithMany()
-                        .HasForeignKey("SalaIdSala")
+                        .HasForeignKey("SalaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Pelicula");
 
                     b.Navigation("Sala");
+                });
+
+            modelBuilder.Entity("BlazorApp1.Shared.Genero", b =>
+                {
+                    b.Navigation("GeneroPelicula");
+                });
+
+            modelBuilder.Entity("BlazorApp1.Shared.Pelicula", b =>
+                {
+                    b.Navigation("GeneroPelicula");
                 });
 #pragma warning restore 612, 618
         }

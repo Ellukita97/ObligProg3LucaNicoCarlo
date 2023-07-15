@@ -5,9 +5,9 @@
 
 <PageTitle> Peliculas</PageTitle>
 
-@if (ListaPeliculas == null)
+@if (ListaPeliculas == null || ListaGenero == null)
 {
-    <div class="d-flex justify-content-center align-self-center h-100">
+    <div class="d-flex justify-content-center loading h-100">
         <div class="spinner-border  text-light" role="status">
         </div>
     </div>
@@ -16,77 +16,108 @@ else
 {
     <div class="Maincontainer">
         <div>
-            <div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Generos</a>
-    </div>
-</div>
-
-<div class="sidebar">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Usuarios Gestión
-            </NavLink>
-        </div>
-    </nav>
-</div>
+            <div>
+                <nav class="flex-column Genero-container">
+                    @foreach(Genero item in ListaGenero)
+                    {
+                    <div>
+                        <button class="Button-Genero">@item.Nombre</button>
+                    </div>
+                    }
+                </nav>
+            </div>
         </div>
         <div class="ContainerPeliculas">   
        
-                    @foreach (Pelicula item in ListaPeliculas)
-                    {
-                        <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
-                    }
+            @foreach (Pelicula item in ListaPeliculas)
+            {
+                <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
+            }
+            <div class="Footer-images">
+
+            </div>
         </div>
-                <div class="Details2">
-                    <div class="Details">
-                        <img src="@peliculaSeleccionada?.PeliculaUrlImagen" class="imagePelicula"/>
-                            <div class="ContainerInfoPelicula">
-                                <h2 class="TituloPelicula">@peliculaSeleccionada?.Nombre</h2>
-                                <small>Genero @peliculaSeleccionada?.Sinopsis</small>
-                                <span>calificacion: @peliculaSeleccionada?.Clasificacion</span>
+        <div class="Details2">
+            <div class="Details">
+                <img src="@peliculaSeleccionada?.PeliculaUrlImagen" class="imagePelicula"/>
+                <div class="ContainerInfoPelicula">
+                    <h2 class="TituloPelicula">@peliculaSeleccionada?.Nombre</h2>
+                    <span></span>
+                    <span>calificacion: @peliculaSeleccionada?.Clasificacion</span>
+                    <span class="Sinopsis"> @peliculaSeleccionada?.Sinopsis</span>
+                    <section class="Proyecciones">
+                    @if(ListaProyeccionesSeleccionada.Count > 0)
+                    {
+                    <div>
+                        @foreach(Proyeccion unaP in ListaProyeccionesSeleccionada)
+                        {
+
+                            <div>
+                                <span>@unaP.FechaHora.ToString()</span>
+                                <span>@unaP.Monto</span>
                             </div>
-                    </div>
+                        }
+                            </div>
+                        }
+                        else
+                        {
+                             <span>No hay Proyecciones</span>                   
+                        }
+                    </section>
                 </div>
+            </div>
+        </div>
 
     </div>
 }
 
 @code {
     private static List<Pelicula>? ListaPeliculas;
+    private static List<Genero>? ListaGenero;
+    private static List<Proyeccion>? ListaProyecciones = new();
+
+    private static List<Proyeccion>? ListaProyeccionesSeleccionada = new();
 
     private Pelicula? peliculaSeleccionada;
 
     private void SeleccionarPelicula (int id)
     {
+        ListaProyeccionesSeleccionada?.Clear();
 
         foreach (Pelicula item in ListaPeliculas)
         {
             if (item.IdPelicula == id)
             {
                 peliculaSeleccionada = item;
-                StateHasChanged();
             }
+        }
+        CargarProyeccionesUnaPelicula(id);
+        StateHasChanged();
+    }
+
+    private void CargarProyeccionesUnaPelicula (int id)
+    {
+        foreach(Proyeccion unaP in ListaProyecciones)
+        {
+            if(unaP.PeliculaId == id)
+            {
+                ListaProyeccionesSeleccionada?.Add(unaP);
+            }
+
         }
     }
 
     protected override async Task OnInitializedAsync()
     {
         ListaPeliculas = await Http.GetFromJsonAsync<List<Pelicula>>("api/peliculas");
+        ListaGenero = await Http.GetFromJsonAsync<List<Genero>>("api/peliculas/generos");
+        ListaProyecciones = await Http.GetFromJsonAsync<List<Proyeccion>>("api/proyecciones");
         peliculaSeleccionada = ListaPeliculas?[0];
+        CargarProyeccionesUnaPelicula(peliculaSeleccionada.IdPelicula);
         StateHasChanged();
     }
+
+    
 }
 
 
@@ -94,25 +125,27 @@ else
     .Peliculas{
         height: 400px;
         width: 250px;
-        margin:8px;
+        margin: 9px 8px 8px 8px;
         cursor:pointer;
+        outline: 1px solid #373737;
     }
     .Peliculas:hover{
         transform:scale(1.05);
     }
     .Details{
-        min-width:460px;
         position: fixed;
         height:820px;
         right:0;
+        border: 1px solid #373737;
         overflow:hidden;
+        margin:5px;
         
     }
     .Details2{
         min-width:435px;
         display:flex;
         align-items:center;
-        height:85vh;
+        height:86vh;
         justify-content:center;
     }
     .Maincontainer{
@@ -123,12 +156,15 @@ else
     .containerPeliculas{
         display:flex;
         flex-wrap:wrap;
+        padding-bottom:10px;
+    }
+    .Footer-images{
+        height:25px;
     }
     .imagePelicula{
         width:435px;
         height:88vh;
         background-size:cover;
-        margin-left:20px;
         filter: blur(4px) brightness(70%);
         opacity:1.5;
         z-index:-1;
@@ -138,11 +174,29 @@ else
         position:absolute;
         z-index:100;
         top: 30px;
-        left:55px;
+        left:15px;
         color:white;
         display:flex;
         flex-direction:column;
     }
-
+    .Genero-container{
+        padding-left:5px;
+        padding-top:10px;
+        width:120px;
+    }
+    .Button-Genero{
+        width:100%;
+    }
+    .TituloPelicula{
+        font-size:35px;
+        text-shadow: 1px 1px 2px black;
+    }
+    .Sinopsis{
+        font-size:20px;
+        text-shadow: 1px 1px 2px black;
+    }
+    .loading{
+        align-items:center;
+    }
 
 </style>

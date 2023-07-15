@@ -1,10 +1,14 @@
 ﻿@inherits LayoutComponentBase
 
+@using BlazorApp1.Client.Extenciones;
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider autentificacionProvider
+@inject NavigationManager navManager
+
 <div>
     <div>
         <NavMenu />
     </div>
-
     <main>
         @Body
     </main>
@@ -12,6 +16,6 @@
 
 <style>
     body{
-        background-color:#00061A;
+        background-color:black;
     }
 </style>

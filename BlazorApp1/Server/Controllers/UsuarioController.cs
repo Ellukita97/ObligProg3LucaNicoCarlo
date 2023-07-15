@@ -1,62 +1,50 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BlazorApp1.Shared;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore.Internal;
+﻿using BlazorApp1.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Server.Controllers
 {
     [ApiController]
-    [Route("api/usuarios")]
+    [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {
-
         private static List<Usuario> usuariosList = new List<Usuario>();
-
         private IDbContextFactory<DbContextBlazor> _ContextFactory;
+
         public UsuarioController(IDbContextFactory<DbContextBlazor> ContextFactory)
         {
             _ContextFactory = ContextFactory;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<Usuario>>> GetUsuarios()
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
+            SesionDTO sesionDTO = new SesionDTO();
             using (var context = _ContextFactory.CreateDbContext())
             {
-                usuariosList = context.Usuarios.ToList();
+                usuariosList = context.Usuarios.Where(u => u.Email.Equals(login.Email) && u.Password.Equals(login.Password)).ToList();
+
                 if (usuariosList.Count > 0)
                 {
-                    return Ok(usuariosList);
+                    sesionDTO.Nombre = usuariosList[0].Nombre;
+                    sesionDTO.Email = usuariosList[0].Email;
+                    sesionDTO.Rol = usuariosList[0].Rol;
+
+                    return StatusCode(StatusCodes.Status200OK, sesionDTO);
                 }
+
                 return BadRequest();
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetSingleUser(int id)
-        {
-            using(var context= _ContextFactory.CreateDbContext())
-            {
-                Usuario user = context.Usuarios.FirstOrDefault(u=> u.Id == id);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return Ok(user);
-                }
-                
-            }
-        }
         [HttpPost]
-        [Route("ingresar")]
-        public async Task<ActionResult> PostUserToDB(Usuario user)
+        [Route("Register")]
+        public async Task<ActionResult> postRegister(Usuario user)
         {
-            if (string.IsNullOrEmpty(user.Nombre))
+            if (string.IsNullOrEmpty(user.Nombre) || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
             {
-                return BadRequest("El usuario debe tener nombre y apellido");
+                return BadRequest("El usuario debe tener nombre , Email y contraseña");
             }
             else
             {
@@ -73,19 +61,8 @@ namespace BlazorApp1.Server.Controllers
                 {
                     return BadRequest("Error al intentar ingresar usuario" + ex.Message);
                 }
-                
+
             }
         }
-        
-        
-
-
-        
-
-       
-        
-
-       
-
     }
 }

@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazorApp1.Shared
 {
+    [Index(nameof(IdSala), nameof(IdProyeccion), IsUnique = true)]
     public class AsientosProyeccionSala
     {
-        [ForeignKey(nameof(Sala))]
+        [Key]
+        public int Id { get; set; }
+
+        [ForeignKey("Sala")]
         public int IdSala { get; set; }
-        [NotMapped]
         public Sala? Sala { get; set; }
 
-
-        [ForeignKey(nameof(Proyeccion))]
+        [ForeignKey("Proyeccion")]
         public int IdProyeccion { get; set; }
-        [NotMapped]
         public Proyeccion? Proyeccion { get; set; }
 
         public int AsientoDisponible { get; set; }

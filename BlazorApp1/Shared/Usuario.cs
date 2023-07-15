@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace BlazorApp1.Shared
 {
@@ -19,22 +13,32 @@ namespace BlazorApp1.Shared
         public string? Nombre { get; set; }
 
         [Required]
-        public string? Contrasenia { get; set; }
+        public string? Password { get; set; }
 
         [Required]
-        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
+        [EmailAddress]
         public string? Email { get; set; }
 
         [Required]
         public DateTime Fecha_Registro { get; set; }
 
         [Required]
-        public string? TipoUsuario { get; set;}
+        public string? Rol { get; set; }
 
         [Required]
         public DateTime FechaNacimiento { get; set; }
 
         [Required]
-        public string? Tel {get; set;}
+        public string? Tel { get; set; }
+
+        public Usuario()
+        {
+
+        }
+        public Usuario(DateTime pdatetime, string Rol)
+        {
+            this.Fecha_Registro = pdatetime;
+            this.Rol = Rol;
+        }
     }
 }

@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BlazorApp1.Shared;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore.Internal;
+﻿using BlazorApp1.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Server.Controllers
@@ -31,7 +29,69 @@ namespace BlazorApp1.Server.Controllers
                 return BadRequest();
             }
         }
+        [HttpGet("{nombre}")]
+        public async Task<ActionResult<List<Pelicula>>> GetPeliculasPorNombre(string nombre)
+        {
+            using (var context = _ContextFactory.CreateDbContext())
+            {
+                PeliculaList = context.Peliculas.Where(p => p.Nombre == nombre).ToList();
+                if (PeliculaList.Count > 0)
+                {
+                    return Ok(PeliculaList);
+                }
+                return BadRequest();
+            }
+        }
 
+        [HttpGet]
+        [Route("generos")]
+        public async Task<ActionResult<List<Genero>>> GetGeneros()
+        {
+            using (var context = _ContextFactory.CreateDbContext())
+            {
+                List<Genero> generos = context.Generos.ToList();
+                if (generos.Count > 0)
+                {
+                    return Ok(generos);
+                }
+                return BadRequest();
+            }
+        }
+        [Route("generosPelicula")]
+        public async Task<ActionResult<List<Genero>>> GetGenerosPeliculas()
+        {
+            using (var context = _ContextFactory.CreateDbContext())
+            {
+                /*
+                
+
+                var peliculasG = context.GeneroPelicula.ToList();
+                var generos = context.Generos.ToList();
+                var pelicula = context.Peliculas.ToList();
+
+                for (int i = 0; i < peliculasG.Count; i++)
+                {
+                    if () 
+                    { 
+                        
+                    }
+                }
+                */
+                string query = $"select GeneroPelicula.Id as Id, Peliculas.Nombre as NombrePelicula , Generos.Nombre from Peliculas inner join GeneroPelicula  on Peliculas.IdPelicula = GeneroPelicula.PeliculaId inner join Generos on Generos.IdGenero = GeneroPelicula.GeneroId";
+
+                //FormattableString a = $@"{query}";
+
+                var peliculasG = context.GeneroPelicula.FromSqlRaw(query).ToList();
+
+
+
+                //if (peliculasG.Count > 0)
+
+                return Ok(peliculasG);
+
+
+            }
+        }
 
 
 

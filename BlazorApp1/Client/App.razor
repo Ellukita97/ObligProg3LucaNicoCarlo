@@ -1,6 +1,25 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using BlazorApp1.Client.Pages
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager navManager
+
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" >
+            <NotAuthorized>
+                    @{
+                        if (context.User.Identity?.IsAuthenticated != true)
+                        {
+                            navManager.NavigateTo("/");
+                        }
+                        else
+                        {
+                            <p class="alert alert-danger">No esta autorizado para ver esta pagina</p>    
+                        
+                        }
+                    }
+            </NotAuthorized>
+        </AuthorizeRouteView>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>

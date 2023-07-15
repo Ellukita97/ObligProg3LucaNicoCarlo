@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp1.Shared
 {
@@ -12,6 +7,7 @@ namespace BlazorApp1.Shared
         [Key]
         public int IdSala { get; set; }
         [Required]
+        [Range(0, int.MaxValue)]
         public int CantTotalAsientos { get; set; }
     }
 }

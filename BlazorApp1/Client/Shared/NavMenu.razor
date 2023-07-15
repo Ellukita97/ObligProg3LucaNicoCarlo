@@ -1,4 +1,11 @@
-﻿<nav class="fixed-top">
+﻿@using BlazorApp1.Client.Pages;
+@using BlazorApp1.Shared;
+@using BlazorApp1.Client.Shared;
+
+@inject HttpClient Http
+
+
+<nav class="fixed-top">
     <nav>
         <div class="d-flex item-nav-menu justify-content-between">
             <div >
@@ -8,13 +15,13 @@
                     </a>
                 </section>
             </div>
-            <div class="">
-                <a href="/Peliculas">Peliculas</a>
-                <a href="#">About</a>
-                <a href="#">About</a>
+            <div >
+                <input placeholder="Buscar..." class="Input-Search"/>
+                <button class="button-Search">Q</button>
             </div>
             <div class="search">
-                <a href="#">search</a>
+                <a href="/Peliculas">Peliculas</a>
+                <a href="/LoginRegistrer">Login</a>
             </div>
 
         </div>
@@ -24,6 +31,26 @@
 
   </div>
 
+@code{
+    /*
+    private string busqueda = "";
+
+    List<Pelicula> ListaPeliculas = new();
+
+    private void HandleSearch(ChangeEventArgs e)
+    {
+        busqueda = e.Value.ToString();
+    }
+
+    private async Task Search()
+    {
+        ListaPeliculas = await Http.GetFromJsonAsync<List<Pelicula>>($"api/peliculas/{busqueda}");
+
+        BusquedaPeliculaCallback(ListaPeliculas);
+    }
+    */
+
+  }
 
 
 <style>
@@ -52,5 +79,33 @@
     }
     .search{
         margin-right: 10px;
+    }
+    .Input-Search{
+        height:50px;
+        width:500px;
+        border:none;
+        outline:3px solid #373737;
+        border-top-left-radius:30px;
+        border-bottom-left-radius:30px;
+        background-color:#0A0A0A;
+        margin-left: 45px;
+        color:white;
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        padding-left:20px;
+    }
+    .Input-Search:focus{
+        outline:3px solid #555555;
+    
+    }
+    .button-Search{
+        height:50px;
+        width:30px;
+        border:none;
+        outline:3px solid #373737;
+        border-top-right-radius:30px;
+        border-bottom-right-radius:30px;
+        background-color:#212121;
+        color: #555555;
+        font-size:20px;
     }
 </style>
