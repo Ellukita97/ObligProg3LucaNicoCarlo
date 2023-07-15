@@ -26,7 +26,7 @@ namespace BlazorApp1.Server.Controllers
                 {
                     return Ok(PeliculaList);
                 }
-                return BadRequest();
+                return NotFound();
             }
         }
         [HttpGet("{nombre}")]
@@ -34,12 +34,25 @@ namespace BlazorApp1.Server.Controllers
         {
             using (var context = _ContextFactory.CreateDbContext())
             {
-                PeliculaList = context.Peliculas.Where(p => p.Nombre == nombre).ToList();
+                PeliculaList = context.Peliculas.FromSqlRaw($"Select * from Peliculas WHERE nombre like '%{nombre}%'").ToList();
                 if (PeliculaList.Count > 0)
                 {
                     return Ok(PeliculaList);
                 }
-                return BadRequest();
+                return NotFound();
+            }
+        }
+        [HttpGet("byid/{id}")]
+        public async Task<ActionResult<Pelicula>> GetPeliculasPorId(int id)
+        {
+            using (var context = _ContextFactory.CreateDbContext())
+            {
+                Pelicula unapel = await context.Peliculas.FindAsync(id);
+                if (unapel != null)
+                {
+                    return Ok(unapel);
+                }
+                return NotFound();
             }
         }
 

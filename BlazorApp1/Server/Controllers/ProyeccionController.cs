@@ -26,7 +26,21 @@ namespace BlazorApp1.Server.Controllers
                 {
                     return Ok(ProyeccionList);
                 }
-                return BadRequest();
+                return NotFound();
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<Proyeccion>>> GetProyeccionPorIdPelicula(int id)
+        {
+            using (var context = _ContextFactory.CreateDbContext())
+            {
+                ProyeccionList = context.Proyecciones.Where(p=>p.PeliculaId==id).ToList();
+                if (ProyeccionList.Count > 0)
+                {
+                    return Ok(ProyeccionList);
+                }
+                return NotFound();
             }
         }
 

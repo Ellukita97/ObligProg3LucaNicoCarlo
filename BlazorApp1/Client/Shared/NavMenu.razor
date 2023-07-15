@@ -1,8 +1,9 @@
 ﻿@using BlazorApp1.Client.Pages;
+@using BlazorApp1.Client.Services;
 @using BlazorApp1.Shared;
 @using BlazorApp1.Client.Shared;
+@inject PeliculasService peliculasService
 
-@inject HttpClient Http
 
 
 <nav class="fixed-top">
@@ -16,8 +17,8 @@
                 </section>
             </div>
             <div >
-                <input placeholder="Buscar..." class="Input-Search"/>
-                <button class="button-Search">Q</button>
+                <input placeholder="Buscar..." class="Input-Search" @onchange="CambioNombre"/>
+                <button class="button-Search" @onclick="buscarPelicula">Q</button>
             </div>
             <div class="search">
                 <a href="/Peliculas">Peliculas</a>
@@ -32,25 +33,24 @@
   </div>
 
 @code{
-    /*
-    private string busqueda = "";
+    string busqueda = "";
 
-    List<Pelicula> ListaPeliculas = new();
-
-    private void HandleSearch(ChangeEventArgs e)
+    private async Task CambioNombre(ChangeEventArgs e)
     {
         busqueda = e.Value.ToString();
+
+        if (busqueda?.Length==0)
+        {
+            await peliculasService.GetListaPeliculas();
+        }
     }
 
-    private async Task Search()
+    private async Task buscarPelicula()
     {
-        ListaPeliculas = await Http.GetFromJsonAsync<List<Pelicula>>($"api/peliculas/{busqueda}");
-
-        BusquedaPeliculaCallback(ListaPeliculas);
+        await peliculasService.GetPeliculaPorNombre(busqueda);
     }
-    */
-
-  }
+ 
+}
 
 
 <style>

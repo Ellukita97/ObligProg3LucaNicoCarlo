@@ -1,11 +1,15 @@
 ﻿@page "/peliculas"
+@using BlazorApp1.Client.Services;
 @using BlazorApp1.Shared
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@inject PeliculasService peliculasService
+@inject GenerosService generosService
+@inject ProyeccionesService proyeccionesService
 
 <PageTitle> Peliculas</PageTitle>
 
-@if (ListaPeliculas == null || ListaGenero == null)
+@if (peliculasService.ListaPeliculas.Count==0 || generosService.ListaGeneros.Count==0)
 {
     <div class="d-flex justify-content-center loading h-100">
         <div class="spinner-border  text-light" role="status">
@@ -18,7 +22,7 @@ else
         <div>
             <div>
                 <nav class="flex-column Genero-container">
-                    @foreach(Genero item in ListaGenero)
+                    @foreach (Genero item in generosService.ListaGeneros)
                     {
                     <div>
                         <button class="Button-Genero">@item.Nombre</button>
@@ -27,9 +31,9 @@ else
                 </nav>
             </div>
         </div>
-        <div class="ContainerPeliculas">   
-       
-            @foreach (Pelicula item in ListaPeliculas)
+        <div class="ContainerPeliculas">
+
+            @foreach (Pelicula item in peliculasService.ListaPeliculas)
             {
                 <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
             }
@@ -39,17 +43,20 @@ else
         </div>
         <div class="Details2">
             <div class="Details">
-                <img src="@peliculaSeleccionada?.PeliculaUrlImagen" class="imagePelicula"/>
+
+                <img src="@peliculasService.PeliculaSeleccionada?.PeliculaUrlImagen" class="imagePelicula" />
+
                 <div class="ContainerInfoPelicula">
-                    <h2 class="TituloPelicula">@peliculaSeleccionada?.Nombre</h2>
+                    <h2 class="TituloPelicula">@peliculasService.PeliculaSeleccionada?.Nombre</h2>
                     <span></span>
-                    <span>calificacion: @peliculaSeleccionada?.Clasificacion</span>
-                    <span class="Sinopsis"> @peliculaSeleccionada?.Sinopsis</span>
+                    <span>calificacion: @peliculasService.PeliculaSeleccionada?.Clasificacion</span>
+                    <span class="Sinopsis"> @peliculasService.PeliculaSeleccionada?.Sinopsis</span>
                     <section class="Proyecciones">
-                    @if(ListaProyeccionesSeleccionada.Count > 0)
+
+                    @if(proyeccionesService.ListaProyecciones.Count > 0)
                     {
                     <div>
-                        @foreach(Proyeccion unaP in ListaProyeccionesSeleccionada)
+                        @foreach (Proyeccion unaP in proyeccionesService.ListaProyecciones)
                         {
 
                             <div>
@@ -57,12 +64,12 @@ else
                                 <span>@unaP.Monto</span>
                             </div>
                         }
-                            </div>
-                        }
-                        else
-                        {
-                             <span>No hay Proyecciones</span>                   
-                        }
+                    </div>
+                    }
+                    else
+                    {
+                        <span>No hay Proyecciones</span>                   
+                    }
                     </section>
                 </div>
             </div>
@@ -72,49 +79,42 @@ else
 }
 
 @code {
-    private static List<Pelicula>? ListaPeliculas;
-    private static List<Genero>? ListaGenero;
-    private static List<Proyeccion>? ListaProyecciones = new();
+    //private Pelicula PeliculaSeleccionada;
 
-    private static List<Proyeccion>? ListaProyeccionesSeleccionada = new();
-
-    private Pelicula? peliculaSeleccionada;
-
-    private void SeleccionarPelicula (int id)
+    /*private async Task GetPeliculaPorId(int id)
     {
-        ListaProyeccionesSeleccionada?.Clear();
+        PeliculaSeleccionada = await Http.GetFromJsonAsync<Pelicula>($"https://localhost:7200/api/peliculas/byid/{id}");
+    }*/
 
-        foreach (Pelicula item in ListaPeliculas)
-        {
-            if (item.IdPelicula == id)
-            {
-                peliculaSeleccionada = item;
-            }
-        }
-        CargarProyeccionesUnaPelicula(id);
-        StateHasChanged();
-    }
-
-    private void CargarProyeccionesUnaPelicula (int id)
+    private async Task SeleccionarPelicula (int id)
     {
-        foreach(Proyeccion unaP in ListaProyecciones)
+        try
         {
-            if(unaP.PeliculaId == id)
-            {
-                ListaProyeccionesSeleccionada?.Add(unaP);
-            }
-
+            peliculasService.SeleccionarPelicula(id);
+            await proyeccionesService.GetListaProyeccion(id);
+            StateHasChanged();
+        }catch(Exception ex)
+        {
+            
         }
-    }
 
+    }
     protected override async Task OnInitializedAsync()
     {
-        ListaPeliculas = await Http.GetFromJsonAsync<List<Pelicula>>("api/peliculas");
-        ListaGenero = await Http.GetFromJsonAsync<List<Genero>>("api/peliculas/generos");
-        ListaProyecciones = await Http.GetFromJsonAsync<List<Proyeccion>>("api/proyecciones");
-        peliculaSeleccionada = ListaPeliculas?[0];
-        CargarProyeccionesUnaPelicula(peliculaSeleccionada.IdPelicula);
+        await peliculasService.GetListaPeliculas();
+        await generosService.GetListaGeneros();
+        peliculasService.SeleccionarPelicula(peliculasService.ListaPeliculas[0].IdPelicula);
+        await proyeccionesService.GetListaProyeccion(peliculasService.ListaPeliculas[0].IdPelicula);
         StateHasChanged();
+    }
+
+    private void UpdatePage()
+    {
+        StateHasChanged();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) peliculasService.DataChanged += UpdatePage;
     }
 
     
