@@ -1,0 +1,106 @@
+﻿@page "/Card"
+@using BlazorApp1.Shared
+@using Microsoft.AspNetCore.Authorization;
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+@attribute [Authorize]
+
+<PageTitle>Card</PageTitle>
+
+<div class="Login-container">
+        <div class="col-ig-4 border d-flex">
+            <div class="container-card">
+                <span class="title">Movie ticket</span>
+                <small>you have 1 item in you cart</small>
+                <div class="card-cart-item">
+                    <div>
+                        <img style="height:70px;width:50px;" src="https://vice-press.com/cdn/shop/products/blade-runner-2049-matt-ferguson-editions-poster.jpg?v=1666719656&width=1100"/>
+                        <span>Blade runner 2049</span>
+
+                    </div>
+                    <div>
+                        <span>1</span>
+                        <a style="text-decoration:none" class="oi oi-elevator" aria-hidden="true"></a>
+                    </div>
+                    <span>$500</span>
+                    <a style="text-decoration:none" class="oi oi-trash" aria-hidden="true"></a>
+                </div>
+            </div>
+            <div class="container-tarjeta">
+                <span>Card Details</span>
+                <span>tipo de tarjeta</span>
+                <input class="form-control"/>
+                <span>Nombre de la tarjeta</span>
+                <input class="form-control"/>
+                <span>numero de tarjeta</span>
+                <input class="form-control"/>
+                <div class="d-flex">
+                    <div>
+                        <span>fecha de expiracion</span>
+                        <input class="form-control"/>
+                    </div>
+                    <div>
+                        <span>CVV</span>
+                        <input class="form-control"/>
+                    </div>
+                </div>
+                <div class="total-container">
+                    <span>Subtotal</span>
+                    <div class="d-flex justify-content-between">
+                        <span>Blade Runner 2049</span>
+                        <span>$500</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Total</span>
+                        <span>$500</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<style>
+    *{
+        color:white;
+    }
+    .Login-container{
+        width:100%;
+        height:100%;
+        display:flex;
+        justify-content:center;
+    }
+    .container-card{
+        display:flex;
+        flex-direction:column;
+        padding:30px;
+    }
+    .title{
+        font-size:30px;
+        border-bottom:1px solid white;
+        padding:10px;
+        box-sizing:border-box;
+        padding-bottom:30px;
+        margin-bottom:30px;
+        font-weight:bold;
+    }
+    .card-cart-item{
+        display:flex;
+        width:500px;
+        height:100px;
+        border-bottom:1px solid white;
+        border-radius:20px;
+        padding:20px;
+        align-items:center;
+        justify-content:space-between;
+    }
+    .container-tarjeta{
+        padding:40px;
+        margin:10px;
+        border-left:1px solid white;
+    }
+    .total-container{
+        border-top:1px solid white;
+        margin-top:20px;
+        padding-top:20px;
+    }
+</style>

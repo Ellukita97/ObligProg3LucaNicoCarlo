@@ -45,6 +45,7 @@
                 </AuthorizeView>
                 <AuthorizeView>
                     <Authorized>
+                        <a href="/Card" style="text-decoration:none" class="oi oi-cart text-white icon-navar" aria-hidden="true"></a>
                         <a class="boton3" @onclick="CerrarSesion">Cerrar sesion</a>
                     </Authorized>
                     <NotAuthorized>
@@ -108,7 +109,7 @@
         text-decoration:none;
         font-size:25px;
         padding:10px;
-        margin-right: 30px;
+        margin: 0px 30px 0px 30px;
     }
     .nav-space{
         margin-top:110px;
@@ -166,13 +167,13 @@
         font-weight: bold;
         transition: all 0.3s ease;
         box-shadow: 0px 0px 20px 5px rgb(21, 248, 0);
-        margin-right: 30px;
+        margin: 0px 30px 0px 30px;
     }
     .boton3:hover{
         box-shadow: 0px 0px 20px 5px rgb(248, 244, 0);
     }
     .drop{
-        margin-right: 50px;
+        margin-right: 30px;
         font-size: 25px;
     }
     .DropItemContainer{
@@ -189,7 +190,14 @@
         cursor:pointer;
         margin-top:5px;
     }
-
+    .icon-navar{
+        font-size: 40px !important;
+        top: -5px !important;
+        cursor:pointer;
+    }
+    .icon-navar:hover{
+        opacity: .5;
+    }
 
    
 
