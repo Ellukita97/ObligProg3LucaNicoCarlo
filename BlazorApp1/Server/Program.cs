@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.ResponseCompression;
 using BlazorApp1.Shared;
+using BlazorBootstrap;
 using Microsoft.EntityFrameworkCore;
-
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,3 +43,4 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
+builder.Services.AddBlazorBootstrap();

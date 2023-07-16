@@ -12,7 +12,6 @@ namespace BlazorApp1.Shared
         [Required]
         public string? PeliculaUrlImagen { get; set; }
 
-        [Required]
         public string? PeliculaUrlPortada { get; set; }
 
         [Required]

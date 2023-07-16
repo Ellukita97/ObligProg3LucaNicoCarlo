@@ -24,6 +24,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Radzen.Blazor" Version="4.13.6" />
     <PackageReference Include="System.Diagnostics.Tools" Version="4.0.0" />
   </ItemGroup>
 

@@ -1,0 +1,72 @@
+﻿@page "/Crud/Pelicula"
+@using BlazorApp1.Shared
+@inject HttpClient Http
+
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles="Administrador")]
+
+<PageTitle>Counter</PageTitle>
+<div class="d-flex justify-content-center">
+        <div class="col-ig-4 border Login Form-Registrer">
+            <div class="mb-3 text-center text-white">
+                <h3>Crear Pelicula</h3>
+            </div>
+
+            <div class="mb-3 text-white">
+                <label>Nombre</label>
+                <input class="form-control"/>
+            </div>
+
+            <div class="mb-3 text-white">
+                <label>Sinopsis</label>
+                <input  class="form-control" />
+            </div>
+
+            <div class="mb-3 text-white">
+                <label>Clasificacion</label>
+                <input class="form-control" />
+            </div>
+
+            <div class="mb-3 text-white">
+                <label>Url Imagen de Pelicula</label>
+                <input class="form-control" />
+            </div>
+            <label>Opcional</label>
+             <div class="mb-3 text-white">
+                <label>Portada</label>
+                <input class="form-control" />
+            </div>
+
+            <div class="mb-3 text-white">
+                <button  class="btn btn-primary">Crear</button>
+            </div>
+        </div>
+</div>
+<style>
+    .Login-container{
+        width:100%;
+        height:100%;
+        display:flex;
+        justify-content:center;
+    }
+    .Login{
+        width:500px;
+    }
+    .Form-Login{
+        display:absolute;
+        padding:20px;
+        box-sizing:border-box;
+    }
+    .Form-Registrer{
+        display:absolute;
+        padding:20px;
+        box-sizing:border-box;
+    }
+    .link-LoginRegistrer{
+        cursor:pointer;
+        color: #606060;
+    }
+    .link-LoginRegistrer:hover{
+        color:white;
+    }
+</style>

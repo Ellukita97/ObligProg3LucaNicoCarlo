@@ -1,9 +1,13 @@
-﻿@using BlazorApp1.Client.Pages;
+﻿@using BlazorApp1.Client.Extenciones;
+@using BlazorApp1.Client.Pages;
 @using BlazorApp1.Client.Services;
 @using BlazorApp1.Shared;
 @using BlazorApp1.Client.Shared;
 @inject PeliculasService peliculasService
 
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider autentificacionProvider
+@inject NavigationManager navManager
 
 
 <nav class="fixed-top">
@@ -21,9 +25,34 @@
                 <button class="button-Search" @onclick="buscarPelicula">Q</button>
             </div>
             <div class="search">
-                <a href="/Peliculas">Peliculas</a>
-                <a href="/LoginRegistrer">Login</a>
+                <a class="text-navar"href="/Peliculas">Peliculas</a>
+                 <AuthorizeView Roles="Administrador">
+                    <Authorized>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle drop" @onclick="HandleDrop" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @context.User.Identity!.Name
+                            </button>
+                            @if(drop)
+                            {
+                            <div class="DropItemContainer d-flex flex-column">
+                                <a href="/Crud/Pelicula" class="DropItem">administrar peliculas</a>
+                                <a class="DropItem">administrar generos</a>
+                                <a class="DropItem">administrar Plicula</a>
+                            </div>
+                            }
+                        </div>
+                    </Authorized>
+                </AuthorizeView>
+                <AuthorizeView>
+                    <Authorized>
+                        <a class="boton3" @onclick="CerrarSesion">Cerrar sesion</a>
+                    </Authorized>
+                    <NotAuthorized>
+                        <a class="boton3" href="/LoginRegistrer">Iniciar sesion</a>
+                    </NotAuthorized>
+                </AuthorizeView>
             </div>
+
 
         </div>
     </nav>
@@ -34,6 +63,14 @@
 
 @code{
     string busqueda = "";
+
+    private bool drop = false;
+
+    private void HandleDrop()
+    {
+        drop = !drop;
+    }
+    
 
     private async Task CambioNombre(ChangeEventArgs e)
     {
@@ -49,6 +86,14 @@
     {
         await peliculasService.GetPeliculaPorNombre(busqueda);
     }
+
+    private async Task CerrarSesion()
+    {
+        var autenticacionExt = (AutentificacionExtencion)autentificacionProvider;
+        await autenticacionExt.ActualizarEstadoAutenticacion(null);
+        navManager.NavigateTo("/", true);
+
+    }
  
 }
 
@@ -58,12 +103,12 @@
         width:100vw;
         background-color:black;
     }
-    .item-nav-menu div a{
+    .text-navar{
         color:white;
         text-decoration:none;
         font-size:25px;
         padding:10px;
-        margin:10px;
+        margin-right: 30px;
     }
     .nav-space{
         margin-top:110px;
@@ -88,7 +133,7 @@
         border-top-left-radius:30px;
         border-bottom-left-radius:30px;
         background-color:#0A0A0A;
-        margin-left: 45px;
+        margin-left: 170px;
         color:white;
         font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         padding-left:20px;
@@ -108,4 +153,45 @@
         color: #555555;
         font-size:20px;
     }
+    .boton3{     
+        text-decoration: none;
+        display:inline-block;
+        width:60%;
+        padding:10px;
+        background: rgb(12, 143, 12);
+        width:60%;
+        text-align: center;
+        color:white;
+        font-size: 20px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0px 0px 20px 5px rgb(21, 248, 0);
+        margin-right: 30px;
+    }
+    .boton3:hover{
+        box-shadow: 0px 0px 20px 5px rgb(248, 244, 0);
+    }
+    .drop{
+        margin-right: 50px;
+        font-size: 25px;
+    }
+    .DropItemContainer{
+        height:200px;
+        min-width: 250px;
+        background-color:#0A0A0A;
+        position:absolute;
+        top: 60px;
+    }
+    .DropItem{
+        font-size:25px;
+        color:white;
+        text-decoration:none;
+        cursor:pointer;
+        margin-top:5px;
+    }
+
+
+   
+
+
 </style>

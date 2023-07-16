@@ -9,14 +9,14 @@ namespace BlazorApp1.Shared
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Falta nombre")]
         public string? Nombre { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Falta Password")]
         public string? Password { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Falta Email")]
+        [EmailAddress(ErrorMessage = "Email no valido")]
         public string? Email { get; set; }
 
         [Required]
@@ -25,10 +25,10 @@ namespace BlazorApp1.Shared
         [Required]
         public string? Rol { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Falta Fecha de nacimiento")]
         public DateTime FechaNacimiento { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Falta Telefono")]
         public string? Tel { get; set; }
 
         public Usuario()
