@@ -3,7 +3,7 @@
 <PageTitle>Home</PageTitle>
 
 <div>
-    <div class="d-flex justify-content-center">
+    <div class="portada-container">
         <div class="Img-portada d-flex flex-column">
             <span class="Title-secundary">Destacado</span>
             <span class="Title-primary">Blade runner</span>
@@ -13,11 +13,107 @@
 
         </div>
     </div>
-    <div class="Container-2">
-
+    <div class="Container-2 d-flex justify-content-center flex-column">
+        <div class="d-flex">
+            <div class="d-flex flex-column container-primary-section">
+                <span class="text-primary">About us</span> 
+                <span class="text-light title-sizing">All the</span> 
+                <span class="text-light title-sizing title">Perks</span> 
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Praesentium corporis blanditiis magni eum dolores fugiat 
+                    quos dolor 
+                </p>
+            </div>
+            <div class="container-segundary-section">
+                <div>
+                    <span class="text-light title">Amazing Movies</span>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Praesentium corporis blanditiis
+                    </p>
+                    <span class="text-light title">Confort amenities</span>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Praesentium corporis blanditiis
+                    </p>
+                    <span class="text-light title">Artisan snacks</span>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Praesentium corporis blanditiis
+                    </p>
+                </div>
+                <div>
+                    <span class="text-light title">Pre order food</span>
+                     <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Praesentium corporis blanditiis 
+                    </p>
+                    <span class="text-light title">Movie go'er rewards</span>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Praesentium corporis blanditiis
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center text-container-center">
+            <span class="text-danger title">Our story</span>
+            <br />
+            <br />
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiis
+                <br />
+                <br />
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur
+                <br />
+                <br />
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur
+            </p>
+        </div>
+        <div class="d-flex justify-content-center flex-column">
+            <span class="text-danger title text-center">HAPPY VIEWERS</span>
+            <span class="Title-primary text-center">Why <span class="title">Choose Us</span></span>
+            <div class="d-flex justify-content-between">
+                <p class="squere-1">
+                    Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit.
+                </p>
+                <p class="squere-1">
+                    Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit.
+                </p>
+                <p class="squere-1">
+                    Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <img style="width:100%; height:600px" src="https://media.istockphoto.com/id/1161556810/es/v%C3%ADdeo/moverse-detr%C3%A1s-de-las-sillas-en-abstract-cinema-hall-con-pantalla-negra-sin-costuras-looped.jpg?s=640x640&k=20&c=MN_XiwNvNbZXKE4I_k5FBbi7bHxYkS5DNHabhcoJBGU="/>
     </div>
 </div>
 <style>
+    *{
+        color:#535353;
+    }
+    .portada-container{
+        display:flex;
+        justify-content:center;
+        padding-top:50px;
+    }
     .Img-portada{
         background-image: linear-gradient(0deg, rgba(0,0,0,0.9108018207282913) 0%, rgba(0,0,0,0) 100%),url('https://i.pinimg.com/originals/8f/00/c7/8f00c71b3e8433a363de09b1551087ad.png');
         background-repeat:no-repeat;
@@ -31,15 +127,15 @@
          z-index:-1;
     }
     .Container-2{
+        display:flex;
         background-color:black;
-        margin-top:120px;
+        margin-top:200px;
         width:100%;
-        height:100vh;
         z-index:100;
+        padding:0px 300px 100px 300px;
     }
     .Title-secundary{
         font-size:40px;
-        color:#535353;
         position:relative;
         top:20px;
         left:-20px;
@@ -52,10 +148,42 @@
     }
     .desscription{
         font-size:40px;
-        color:#535353;
         margin-left:40px;
         position:relative;
         top:-40px;
         text-shadow: 1px 1px 2px black;
+    }
+    .title-sizing{
+        font-size:60px;
+    }
+    .title{
+        font-weight:bold;
+    }
+    .container-primary-section{
+        width:700px;
+        padding-right:40px;
+        box-sizing:border-box;
+    }
+    .container-segundary-section{
+        display:flex;
+        border: 3px solid #0066ff;
+        margin-left:40px;
+        box-sizing:border-box;
+        height: 310px;
+    }
+    .container-segundary-section div{
+        margin:30px;
+    }
+    .text-container-center{
+        padding:100px 300px 50px 300px;
+    }
+    .squere-1{
+        margin-top:50px;
+        height:300px;
+        width:300px;
+        border: 3px solid #535353;
+        display: flex;
+        align-items: center;
+        padding: 20px;
     }
 </style>
