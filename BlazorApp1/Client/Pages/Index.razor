@@ -3,10 +3,10 @@
 <PageTitle>Home</PageTitle>
 
 <div>
-    <div class="portada-container">
-        <div class="Img-portada d-flex flex-column">
+    <div class="portada-container ">
+        <div class="Img-portada d-flex flex-column slide-right">
             <span class="Title-secundary">Destacado</span>
-            <span class="Title-primary">Blade runner</span>
+            <span class="Title-primary scale-up-vertical-center">Blade runner</span>
             <span class="desscription">Accion Ciencia-ficcion</span>
         </div>
         <div>
@@ -87,7 +87,7 @@
         </div>
         <div class="d-flex justify-content-center flex-column">
             <span class="text-danger title text-center">HAPPY VIEWERS</span>
-            <span class="Title-primary text-center">Why <span class="title">Choose Us</span></span>
+            <span class="Title-primary text-center scale-up-vertical-center">Why <span class="title">Choose Us</span></span>
             <div class="d-flex justify-content-between">
                 <p class="squere-1">
                     Praesentium corporis blanditiisLorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -186,4 +186,29 @@
         align-items: center;
         padding: 20px;
     }
+    .scale-up-vertical-center{
+        animation:scale-up-vertical-center 0.4s
+    } 
+    @@keyframes scale-up-vertical-center{
+        0%{
+            transform:scaleY(.2)
+        }
+        100%{
+            transform:scaleY(1)
+        }
+    }
+    .slide-right{
+        animation:slide-right 0.4s linear both
+    }
+    @@keyframes slide-right{
+        0%{
+            transform:translateX(-200px);
+            opacity:0;
+        }
+        100%{
+            transform:translateX(0px);
+            opacity:1;
+        }
+    }
+}
 </style>

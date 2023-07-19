@@ -35,7 +35,7 @@ else
 
             @foreach (Pelicula item in peliculasService.ListaPeliculas)
             {
-                <img src=@item.PeliculaUrlImagen class="Peliculas" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
+                <img src=@item.PeliculaUrlImagen class="Peliculas scale-up-vertical-center" id="@item.IdPelicula" @onclick="@(e => SeleccionarPelicula(item.IdPelicula))"/>
             }
             <div class="Footer-images">
 
@@ -136,6 +136,7 @@ else
     }
     .Peliculas:hover{
         transform:scale(1.05);
+        transition:.2s;
     }
     .Details{
         position: fixed;
@@ -240,6 +241,16 @@ else
         height: 700px;
         
      }
-
+    .scale-up-vertical-center{
+        animation:scale-up-vertical-center 0.4s
+    } 
+    @@keyframes scale-up-vertical-center{
+        0%{
+            transform:scaleY(.2)
+        }
+        100%{
+            transform:scaleY(1)
+        }
+    }
 
 </style>
