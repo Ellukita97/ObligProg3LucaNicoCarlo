@@ -70,41 +70,49 @@ namespace BlazorApp1.Server.Controllers
                 return BadRequest();
             }
         }
-        [Route("generosPelicula")]
-        public async Task<ActionResult<List<Genero>>> GetGenerosPeliculas()
+        [HttpGet]
+        [Route("generosPelicula/{idPelicula}")]
+        public async Task<ActionResult<List<Genero>>> GetGenerosPeliculas(int idPelicula)
         {
             using (var context = _ContextFactory.CreateDbContext())
             {
-                /*
-                
-
-                var peliculasG = context.GeneroPelicula.ToList();
-                var generos = context.Generos.ToList();
-                var pelicula = context.Peliculas.ToList();
-
-                for (int i = 0; i < peliculasG.Count; i++)
+                List<Genero> ListaNombreGeneros = context.Generos.FromSqlRaw($"select g.* from Generos g inner join GeneroPelicula gp on gp.GeneroId=g.IdGenero inner join Peliculas p on p.IdPelicula=gp.PeliculaId where p.IdPelicula={idPelicula}").ToList();
+                if(ListaNombreGeneros.Count > 0)
                 {
-                    if () 
-                    { 
-                        
-                    }
+                    return Ok(ListaNombreGeneros);
                 }
-                */
-                string query = $"select GeneroPelicula.Id as Id, Peliculas.Nombre as NombrePelicula , Generos.Nombre from Peliculas inner join GeneroPelicula  on Peliculas.IdPelicula = GeneroPelicula.PeliculaId inner join Generos on Generos.IdGenero = GeneroPelicula.GeneroId";
-
-                //FormattableString a = $@"{query}";
-
-                var peliculasG = context.GeneroPelicula.FromSqlRaw(query).ToList();
-
-
-
-                //if (peliculasG.Count > 0)
-
-                return Ok(peliculasG);
-
-
+                return BadRequest(ListaNombreGeneros);
             }
         }
+        [HttpPost]
+        [Route("Post")]
+        public async Task<ActionResult> PostPelicula(Pelicula PelAAgregar)
+        {
+            using (var context = _ContextFactory.CreateDbContext())
+            {
+                context.Add(PelAAgregar);
+                await context.SaveChangesAsync();
+                return Ok(PelAAgregar);
+               
+            }
+        }
+
+        [HttpGet]
+        [Route("peliculaPorGenero/{nombreGenero}")]
+        public async Task<ActionResult<List<Genero>>> GetPeliculaPorGenero(string nombreGenero)
+        {
+            using (var context = _ContextFactory.CreateDbContext())
+            {
+                List<Pelicula> ListaPeliculas = context.Peliculas.FromSqlRaw($"select p.* from Peliculas p inner join GeneroPelicula gp on gp.PeliculaId=p.IdPelicula inner join Generos g on g.IdGenero=gp.GeneroId where g.Nombre='{nombreGenero}'").ToList();
+                if (ListaPeliculas.Count > 0)
+                {
+                    return Ok(ListaPeliculas);
+                }
+                return BadRequest(ListaPeliculas);
+            }
+        }
+
+
 
 
 

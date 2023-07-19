@@ -10,15 +10,13 @@ namespace BlazorApp1.Client.Services
         private HttpClient? _httpClient;
 
         //Esta lista solo tiene las proyecciones de la pelicula actualmente seleccionada
-        public List<Proyeccion> ListaProyecciones = new List<Proyeccion>();
+        public List<Proyeccion> ListaProyecciones = new();
 
 
         public ProyeccionesService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
-
-       
 
         public async Task GetListaProyeccion(int idPelicula)
         {

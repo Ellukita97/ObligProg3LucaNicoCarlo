@@ -22,11 +22,12 @@ else
         <div>
             <div>
                 <nav class="flex-column Genero-container">
+                    <button class="Button-Genero" @onclick="e=>peliculasService.GetListaPeliculas()">Reset</button>
                     @foreach (Genero item in generosService.ListaGeneros)
                     {
-                    <div>
-                        <button class="Button-Genero">@item.Nombre</button>
-                    </div>
+                    
+                    <button class="Button-Genero" @onclick="e=>peliculasService.GetPeliculasPorGenero(item.Nombre)">@item.Nombre</button>
+                    
                     }
                 </nav>
             </div>
@@ -48,19 +49,26 @@ else
 
                 <div class="ContainerInfoPelicula">
                     <h2 class="TituloPelicula">@peliculasService.PeliculaSeleccionada?.Nombre</h2>
+                    <div class="row-generos">
+                        @if (peliculasService.ListaGenerosDePelSeleccionada.Count > 0)
+                        {
+                            @foreach (Genero unGenero in peliculasService.ListaGenerosDePelSeleccionada)
+                            {
+                              <p class="generos">@unGenero.Nombre</p>
+                            }
+                        }
+                    </div>
                     <span></span>
                     <span>calificacion: @peliculasService.PeliculaSeleccionada?.Clasificacion</span>
                     <div class="Container-sinoProyec">
                     <span class="Sinopsis"> @peliculasService.PeliculaSeleccionada?.Sinopsis</span>
                     <section>
-
                     @if(proyeccionesService.ListaProyecciones.Count > 0)
                     {
                     <div class="Proyeccion-container">
                         <span>Proyecciones</span>
                         @foreach (Proyeccion unaP in proyeccionesService.ListaProyecciones)
                         {
-
                             <div class="Proyecciones">
                                 <span>Proyeccion: </span>
                                 <span>Fecha: @unaP.FechaHora.ToString("dd/MM/yyyy")</span>
@@ -74,7 +82,8 @@ else
                     {
                         <span>No hay Proyecciones</span>                   
                     }
-                    </section>
+
+                        </section>
                     </div>
                 </div>
             </div>
@@ -84,23 +93,20 @@ else
 }
 
 @code {
-    //private Pelicula PeliculaSeleccionada;
-
-    /*private async Task GetPeliculaPorId(int id)
-    {
-        PeliculaSeleccionada = await Http.GetFromJsonAsync<Pelicula>($"https://localhost:7200/api/peliculas/byid/{id}");
-    }*/
-
     private async Task SeleccionarPelicula (int id)
     {
         try
         {
-            peliculasService.SeleccionarPelicula(id);
-            await proyeccionesService.GetListaProyeccion(id);
-            StateHasChanged();
+            if (peliculasService.PeliculaSeleccionada.IdPelicula != id)
+            {
+                peliculasService.SeleccionarPelicula(id);
+                await peliculasService.GetGenerosDePelicula(id);
+                proyeccionesService.ListaProyecciones.Clear();
+                await proyeccionesService.GetListaProyeccion(id);   
+            }
         }catch(Exception ex)
         {
-            
+            Console.WriteLine(ex.Message);
         }
 
     }
@@ -108,9 +114,9 @@ else
     {
         await peliculasService.GetListaPeliculas();
         await generosService.GetListaGeneros();
+        await peliculasService.GetGenerosDePelicula(peliculasService.ListaPeliculas[0].IdPelicula);
         peliculasService.SeleccionarPelicula(peliculasService.ListaPeliculas[0].IdPelicula);
         await proyeccionesService.GetListaProyeccion(peliculasService.ListaPeliculas[0].IdPelicula);
-        StateHasChanged();
     }
 
     private void UpdatePage()
@@ -251,6 +257,14 @@ else
         100%{
             transform:scaleY(1)
         }
+    }
+
+    .row-generos{
+        display:flex;
+        flex-direction:row;
+    }
+    .generos{
+        margin-right:10px;
     }
 
 </style>

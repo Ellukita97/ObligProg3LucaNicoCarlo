@@ -9,15 +9,16 @@ namespace BlazorApp1.Shared
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPelicula { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo requerido")]
         public string? PeliculaUrlImagen { get; set; }
 
         public string? PeliculaUrlPortada { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo requerido")]
         public string? Nombre { get; set; }
-
+        [Required(ErrorMessage="Campo requerido")]
         public string? Sinopsis { get; set; }
+        [Required(ErrorMessage = "Campo requerido")]
         [Range(0, 10)]
         public float Clasificacion { get; set; }
 

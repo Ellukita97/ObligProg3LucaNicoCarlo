@@ -18,8 +18,15 @@ namespace BlazorApp1.Client.Services
 
         public async Task GetListaGeneros()
         {
-            _httpClient = _httpClientFactory.CreateClient();
-            ListaGeneros = await _httpClient.GetFromJsonAsync<List<Genero>>("https://localhost:7200/api/peliculas/generos");
+            try
+            {
+                _httpClient = _httpClientFactory.CreateClient();
+                ListaGeneros = await _httpClient.GetFromJsonAsync<List<Genero>>("https://localhost:7200/api/peliculas/generos");
+            }catch (Exception ex)
+            {
+
+            }
+            
            
         }
     }

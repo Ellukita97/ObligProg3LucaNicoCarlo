@@ -1,12 +1,16 @@
 ﻿@page "/Crud/Pelicula"
+@using BlazorApp1.Client.Services;
 @using BlazorApp1.Shared
 @inject HttpClient Http
-
+@inject PeliculasService peliculasService
+@inject NavigationManager navManager
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize(Roles="Administrador")]
 
 <PageTitle>Counter</PageTitle>
 <div class="d-flex justify-content-center">
+    <EditForm Model="PeliculaCreada">
+        <DataAnnotationsValidator/>
         <div class="col-ig-4 border Login Form-Registrer">
             <div class="mb-3 text-center text-white">
                 <h3>Crear Pelicula</h3>
@@ -14,34 +18,55 @@
 
             <div class="mb-3 text-white">
                 <label>Nombre</label>
-                <input class="form-control"/>
+                <input class="form-control" @bind="PeliculaCreada.Nombre" />
+                <ValidationMessage For="@(()=>PeliculaCreada.Nombre)" />
             </div>
 
             <div class="mb-3 text-white">
                 <label>Sinopsis</label>
-                <input  class="form-control" />
+                <input class="form-control" @bind="@PeliculaCreada.Sinopsis" />
+                <ValidationMessage For="@(()=>PeliculaCreada.Sinopsis)" />
             </div>
 
             <div class="mb-3 text-white">
                 <label>Clasificacion</label>
-                <input class="form-control" />
+                <input class="form-control" @bind="PeliculaCreada.Clasificacion" />
+                <ValidationMessage For="@(()=>PeliculaCreada.Clasificacion)" />
             </div>
 
             <div class="mb-3 text-white">
                 <label>Url Imagen de Pelicula</label>
-                <input class="form-control" />
+                <input class="form-control" @bind="PeliculaCreada.PeliculaUrlImagen" />
+                <ValidationMessage For="@(()=>PeliculaCreada.PeliculaUrlImagen)" />
             </div>
             <label class="text-info">Opcional</label>
              <div class="mb-3 text-white">
                 <label>Portada</label>
-                <input class="form-control" />
+                <input class="form-control" @bind="PeliculaCreada.PeliculaUrlPortada" />
             </div>
 
             <div class="mb-3 text-white">
-                <button  class="btn btn-primary">Crear</button>
+                <button type="submit" class="btn btn-primary" onclick="@AgregarPelicula">Crear</button>
             </div>
         </div>
+    </EditForm>
 </div>
+@code{
+    Pelicula PeliculaCreada = new();
+
+
+    public async void AgregarPelicula()
+    {
+        PeliculaCreada.PeliculaUrlPortada = PeliculaCreada.PeliculaUrlPortada == null ? "" : PeliculaCreada.PeliculaUrlPortada;
+        await peliculasService.PostPelicula(PeliculaCreada);
+        navManager.NavigateTo("/Peliculas");
+
+    }
+}
+
+
+
+
 <style>
     .Login-container{
         width:100%;
