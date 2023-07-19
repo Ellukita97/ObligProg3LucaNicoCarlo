@@ -51,41 +51,38 @@
             <p>
                La idea de la web nace de una aplicación de escritorio y web de nombre "Stremio", una aplicacion de streaming de torrents en la cual
                basamos nuestra idea para el proyecto, pero siendo esta una página de un cine inevitablemente agregamos proyecciones a las peliculas
-                <br />
-                <br />
-               
-                <br />
-                <br />
               
             </p>
         </div>
         <div class="d-flex justify-content-center flex-column">
             <span class="Title-primary text-center scale-up-vertical-center">Creado <span class="title">Por</span></span>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex cine">
                 <div class="col">
                     <div class="squere-1">
                         <img class="Imagen-Square" src="GokuPeniarol.jpg" />
                     </div>
-                    <div class="texto-abajoDeImagen">
+                    <div>
                         <p>Lucas Rodrigues </p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="squere-1">
-                        <img class="Imagen-Square" src="GokuPeniarol.jpg" />
+                        <img class="Imagen-Square" src="cat.png" />
                     </div>
-                    <div class="texto-abajoDeImagen">
+                    <div>
                         <p>Nicolás Villegas </p>
                     </div>
+                    
                 </div>
                 <div class="col">
+                    
                     <div class="squere-1">
-                        <img class="Imagen-Square" src="GokuPeniarol.jpg" />
+                        <img class="Imagen-Square" src="aang.png" />
                     </div>
-                    <div class="texto-abajoDeImagen">
+                    <div>
                         <p>Carlos Fernández</p>
                     </div>
-                        
+                      
                     
                 </div>
                 
@@ -93,31 +90,34 @@
         </div>
     </div>
     <div>
-        <img style="width:100%; height:600px" src="https://media.istockphoto.com/id/1161556810/es/v%C3%ADdeo/moverse-detr%C3%A1s-de-las-sillas-en-abstract-cinema-hall-con-pantalla-negra-sin-costuras-looped.jpg?s=640x640&k=20&c=MN_XiwNvNbZXKE4I_k5FBbi7bHxYkS5DNHabhcoJBGU="/>
+        <img style="width:100%; height:300px" src="https://media.istockphoto.com/id/1161556810/es/v%C3%ADdeo/moverse-detr%C3%A1s-de-las-sillas-en-abstract-cinema-hall-con-pantalla-negra-sin-costuras-looped.jpg?s=640x640&k=20&c=MN_XiwNvNbZXKE4I_k5FBbi7bHxYkS5DNHabhcoJBGU="/>
     </div>
 </div>
 <style>
     *{
         color:#535353;
     }
+
+    .cine{
+        display: flex;
+        justify-content:space-between;
+        border: solid white;
+    }
     .Imagen-Square{
         width:inherit;
         height:inherit;
     }
-    .texto-abajoDeImagen{
-        width:300px;
-        height:300px;
-    }
+    
     .portada-container{
         display:flex;
         justify-content:center;
-        padding-top:50px;
+        padding-top:40px;
     }
     .col{
         display:flex;
         flex-direction:column;
         text-align:center;
-        justify-content:space-between;
+        justify-content:center;
     }
     .Img-portada{
         background-image: linear-gradient(0deg, rgba(0,0,0,0.9108018207282913) 0%, rgba(0,0,0,0) 100%),url('https://i.pinimg.com/originals/8f/00/c7/8f00c71b3e8433a363de09b1551087ad.png');
@@ -186,9 +186,9 @@
         margin-top:50px;
         height:300px;
         width:300px;
-        border: 3px solid #535353;
         display: flex;
         align-items: center;
+        align-self:center;
     }
     .scale-up-vertical-center{
         animation:scale-up-vertical-center 0.4s

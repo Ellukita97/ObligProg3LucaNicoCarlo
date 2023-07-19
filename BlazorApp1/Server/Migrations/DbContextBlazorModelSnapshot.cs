@@ -111,10 +111,10 @@ namespace BlazorApp1.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PeliculaUrlPortada")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sinopsis")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdPelicula");

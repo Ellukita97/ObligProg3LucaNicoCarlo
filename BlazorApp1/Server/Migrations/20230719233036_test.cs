@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BlazorApp1.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class databaseFinished : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,7 @@ namespace BlazorApp1.Server.Migrations
                 {
                     IdGenero = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DescGenero = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,9 +31,9 @@ namespace BlazorApp1.Server.Migrations
                     IdPelicula = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PeliculaUrlImagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PeliculaUrlPortada = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PeliculaUrlPortada = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Sinopsis = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sinopsis = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Clasificacion = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>

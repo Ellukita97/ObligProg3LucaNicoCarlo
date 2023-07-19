@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorApp1.Server.Migrations
 {
     [DbContext(typeof(DbContextBlazor))]
-    [Migration("20230715014508_databaseErrorMensajes")]
-    partial class databaseErrorMensajes
+    [Migration("20230719233036_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,10 +114,10 @@ namespace BlazorApp1.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PeliculaUrlPortada")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sinopsis")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdPelicula");
