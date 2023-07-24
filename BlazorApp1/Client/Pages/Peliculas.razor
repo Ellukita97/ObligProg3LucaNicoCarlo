@@ -61,27 +61,27 @@ else
                     <span></span>
                     <span>calificacion: @peliculasService.PeliculaSeleccionada?.Clasificacion</span>
                     <div class="Container-sinoProyec">
-                    <span class="Sinopsis"> @peliculasService.PeliculaSeleccionada?.Sinopsis</span>
-                    <section>
-                    @if(proyeccionesService.ListaProyecciones.Count > 0)
-                    {
-                    <div class="Proyeccion-container">
-                        <span>Proyecciones</span>
-                        @foreach (Proyeccion unaP in proyeccionesService.ListaProyecciones)
+                        <span class="Sinopsis"> @peliculasService.PeliculaSeleccionada?.Sinopsis</span>
+                        <section>
+                        @if(proyeccionesService.ListaProyecciones.Count > 0)
                         {
-                            <div class="Proyecciones">
-                                <span>Proyeccion: </span>
-                                <span>Fecha: @unaP.FechaHora.ToString("dd/MM/yyyy")</span>
-                                <span>Hora: @unaP.FechaHora.ToString("t")</span>
-                                <span>$@unaP.Monto</span>
-                            </div>
+                        <div class="Proyeccion-container">
+                            <span>Proyecciones</span>
+                            @foreach (Proyeccion unaP in proyeccionesService.ListaProyecciones)
+                            {
+                                <div class="Proyecciones">
+                                    <span>Proyeccion: </span>
+                                    <span>Fecha: @unaP.FechaHora.ToString("dd/MM/yyyy")</span>
+                                    <span>Hora: @unaP.FechaHora.ToString("t")</span>
+                                    <span>$@unaP.Monto</span>
+                                </div>
+                            }
+                        </div>
                         }
-                    </div>
-                    }
-                    else
-                    {
-                        <span>No hay Proyecciones</span>                   
-                    }
+                        else
+                        {
+                            <span>No hay Proyecciones</span>                   
+                        }
 
                         </section>
                     </div>
@@ -97,6 +97,7 @@ else
     {
         try
         {
+            //realiza la selecion a la db si la pelicula es diferente a la que esta seleccionada
             if (peliculasService.PeliculaSeleccionada.IdPelicula != id)
             {
                 peliculasService.SeleccionarPelicula(id);
@@ -118,13 +119,15 @@ else
         peliculasService.SeleccionarPelicula(peliculasService.ListaPeliculas[0].IdPelicula);
         await proyeccionesService.GetListaProyeccion(peliculasService.ListaPeliculas[0].IdPelicula);
     }
-
+    //Re renderiza el componente
     private void UpdatePage()
     {
         StateHasChanged();
     }
+    //se ejecuta la primera vez que se renderiza
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        //se agrega al DataChanged la funcion UpdatePage
         if (firstRender) peliculasService.DataChanged += UpdatePage;
     }
 

@@ -10,17 +10,27 @@ namespace BlazorApp1.Server.Controllers
     {
         private List<Pelicula> PeliculaList = new List<Pelicula>();
 
+        //interfas que se llena con las propiedades y metodos de DbContextBlazor,
+        //esta se crea para poder conectarse a la base de datos
         private IDbContextFactory<DbContextBlazor> _ContextFactory;
         public PeliculasController(IDbContextFactory<DbContextBlazor> ContextFactory)
         {
             _ContextFactory = ContextFactory;
         }
 
+
+        //metodo que se ejecuta cuando se le llama a la api
+        //Task == promesa?
+        //ActionResult == http status code
+        //List<Pelicula> lista de peliculas
+        //el metodo devuelve una lista de Peliculas
         [HttpGet]
         public async Task<ActionResult<List<Pelicula>>> GetPeliculas()
         {
+            //crea el contexto y se guarda en la variable context
             using (var context = _ContextFactory.CreateDbContext())
             {
+
                 PeliculaList = context.Peliculas.ToList();
                 if (PeliculaList.Count > 0)
                 {
@@ -77,7 +87,7 @@ namespace BlazorApp1.Server.Controllers
             using (var context = _ContextFactory.CreateDbContext())
             {
                 List<Genero> ListaNombreGeneros = context.Generos.FromSqlRaw($"select g.* from Generos g inner join GeneroPelicula gp on gp.GeneroId=g.IdGenero inner join Peliculas p on p.IdPelicula=gp.PeliculaId where p.IdPelicula={idPelicula}").ToList();
-                if(ListaNombreGeneros.Count > 0)
+                if (ListaNombreGeneros.Count > 0)
                 {
                     return Ok(ListaNombreGeneros);
                 }
@@ -90,10 +100,17 @@ namespace BlazorApp1.Server.Controllers
         {
             using (var context = _ContextFactory.CreateDbContext())
             {
-                context.Add(PelAAgregar);
-                await context.SaveChangesAsync();
-                return Ok(PelAAgregar);
-               
+                try
+                {
+                    context.Add(PelAAgregar);
+                    await context.SaveChangesAsync();
+                    return Ok(PelAAgregar);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(PelAAgregar);
+                }
+
             }
         }
 

@@ -8,8 +8,10 @@
 @attribute [Authorize(Roles="Administrador")]
 
 <PageTitle>Counter</PageTitle>
+
 <div class="d-flex justify-content-center">
-    <EditForm Model="PeliculaCreada">
+    <img class="Portada-fondo" src="@PeliculaCreada.PeliculaUrlPortada"/>
+    <EditForm Model="PeliculaCreada" OnValidSubmit="AgregarPelicula">
         <DataAnnotationsValidator/>
         <div class="col-ig-4 border Login Form-Registrer">
             <div class="mb-3 text-center text-white">
@@ -36,8 +38,20 @@
 
             <div class="mb-3 text-white">
                 <label>Url Imagen de Pelicula</label>
-                <input class="form-control" @bind="PeliculaCreada.PeliculaUrlImagen" />
+
+                <input class="form-control"  @onchange="e => CheckUrlValid(e.Value.ToString())" />
                 <ValidationMessage For="@(()=>PeliculaCreada.PeliculaUrlImagen)" />
+                <div class="d-flex justify-content-center">
+
+                    <img src="@PeliculaCreada.PeliculaUrlImagen" class="img-Pelicula" />
+                </div>
+                @if (UrlImageValid == false)
+                {
+                    <h4 class="alert-danger text-center">Url de la imagen no valida</h4>
+                }
+                    
+                
+                
             </div>
             <label class="text-info">Opcional</label>
              <div class="mb-3 text-white">
@@ -46,21 +60,60 @@
             </div>
 
             <div class="mb-3 text-white">
-                <button type="submit" class="btn btn-primary" onclick="@AgregarPelicula">Crear</button>
+                <button type="submit" class="btn btn-primary">Crear</button>
             </div>
         </div>
+        
     </EditForm>
+    <div class="Pelicula-card text-white d-flex flex-column justify-content-center">
+        <div class="Pelicula-card-container">
+            <img class="Pelicula-card-imge" src="@PeliculaCreada.PeliculaUrlImagen"/>
+            <div class="Pelicula-card-info d-flex flex-column">
+                <h2 class="TituloPelicula">@PeliculaCreada?.Nombre</h2>
+                <span>calificacion: @PeliculaCreada?.Clasificacion</span>
+                <span class="Sinopsis"> @PeliculaCreada?.Sinopsis</span>
+            </div>
+        </div>
+    </div>
+
 </div>
 @code{
     Pelicula PeliculaCreada = new();
-
-
-    public async void AgregarPelicula()
+    bool UrlImageValid = false;
+    //@bind="PeliculaCreada.PeliculaUrlImagen"
+    private async Task AgregarPelicula()
     {
-        PeliculaCreada.PeliculaUrlPortada = PeliculaCreada.PeliculaUrlPortada == null ? "" : PeliculaCreada.PeliculaUrlPortada;
-        await peliculasService.PostPelicula(PeliculaCreada);
-        navManager.NavigateTo("/Peliculas");
+        try
+        {
+            if (UrlImageValid)
+            {
+                PeliculaCreada.PeliculaUrlPortada = PeliculaCreada.PeliculaUrlPortada == null ? "" : PeliculaCreada.PeliculaUrlPortada;
+                var res = await peliculasService.PostPelicula(PeliculaCreada);
+                if (res.IsSuccessStatusCode)
+                {
+                    navManager.NavigateTo("/Peliculas");
+                }
+            }
 
+        }
+        catch
+        {
+
+        }
+    }
+    private async Task CheckUrlValid(string UrlImage)
+    {
+        PeliculaCreada.PeliculaUrlImagen = UrlImage;
+
+        var resUrlImage = await Http.GetAsync(PeliculaCreada.PeliculaUrlImagen);
+        if (resUrlImage.IsSuccessStatusCode)
+        {
+            UrlImageValid = true;
+        }
+        else
+        {
+            UrlImageValid = false;
+        }
     }
 }
 
@@ -68,6 +121,14 @@
 
 
 <style>
+    .Portada-fondo{
+        position: absolute;
+        z-index: -1;
+        width: 100vw;
+        opacity: 0.3;
+        height: 89.6vh;
+        filter: blur(4px);
+    }
     .Login-container{
         width:100%;
         height:100%;
@@ -83,9 +144,11 @@
         box-sizing:border-box;
     }
     .Form-Registrer{
-        display:absolute;
-        padding:20px;
-        box-sizing:border-box;
+        display: absolute;
+        padding: 20px;
+        box-sizing: border-box;
+        height: 850px;
+        margin-top: 10px;
     }
     .link-LoginRegistrer{
         cursor:pointer;
@@ -93,5 +156,38 @@
     }
     .link-LoginRegistrer:hover{
         color:white;
+    }
+    .img-Pelicula{
+        margin-top: 10px;
+        height: 280px;
+        width: 190px;
+    }
+    .Pelicula-card{
+        width:400px;
+        margin: 20px;
+    }
+    .Pelicula-card-container{
+        width:420px;
+        height:650px;
+    }
+    .Pelicula-card-imge{
+        width:inherit;
+        height:inherit;
+        filter: blur(4px) brightness(70%);
+    }
+    .Pelicula-card-info{
+        position:relative;
+        top: -620px;
+        left: 30px;
+    }
+    .TituloPelicula{
+        font-size:35px;
+        text-shadow: 1px 1px 2px black;
+    }
+    .Sinopsis{
+        font-size:20px;
+        text-shadow: 1px 1px 2px black;
+        margin-top:40px;
+        margin-bottom:40px;
     }
 </style>
