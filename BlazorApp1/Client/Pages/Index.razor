@@ -1,19 +1,73 @@
 ﻿@page "/"
+@using BlazorApp1.Client.Services;
+@using BlazorApp1.Shared
+@inject IJSRuntime JSRuntime
+@inject PeliculasService peliculasService
 
 <PageTitle>Home</PageTitle>
 
 <div>
-    <div class="portada-container ">
-        <div class="Img-portada d-flex flex-column slide-right">
-            <span class="Title-secundary">Destacado</span>
-            <span class="Title-primary scale-up-vertical-center">Blade runner</span>
-            <span class="desscription">Accion Ciencia-ficcion</span>
-        </div>
-        <div>
+    <div class="portada-container slide-right">
+        <!-- NOTE: the data-bs- attributes added as per the Bootstrap v5.1 instructions -->
+        <div id="@carouselName" class="carousel slide" data-bs-ride="carousel" data-bs-wrap="true" data-bs-interval="60000" data-bs-pause="false">
+	        <div class="carousel-indicators">
+                
+		        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                @for (int i = 1; i <= count; i++)
+                {
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" aria-label="Slide @i+1"></button>
+                }
+                
+	        </div>
+	        <div class="carousel-inner carousel-item2 ">
+                @foreach (Pelicula item in peliculasService.ListaPeliculas)
+                {
+                    if (item.PeliculaUrlPortada != "" && item.PeliculaUrlPortada != null)
+                    {
+                        if (count == 1)
+                        {
+                        <div class="carousel-item active">
+			                <img src="@item.PeliculaUrlPortada" class="d-block w-100 car-image-index" alt="...">
+                            <div class="position-absolute position-portada-text d-flex flex-column">
+                                <span class="Title-secundary">Destacado</span>
+                                <span class="Title-primary scale-up-vertical-center">@item.Nombre</span>
+                                <span class="desscription">Recomendado</span>
+                            </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item">
+			                    <img src="@item.PeliculaUrlPortada" class="d-block w-100 car-image-index" alt="...">
+                                <div class="position-absolute position-portada-text d-flex flex-column">
+                                    <span class="Title-secundary">Destacado</span>
+                                    <span class="Title-primary scale-up-vertical-center">@item.Nombre</span>
+                                    <span class="desscription">Recomendado</span>
+                                </div>
+		                    </div>      
+                        }
+                        count++;
 
+                                     
+                    }
+
+                }
+	        </div>
+	        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+		        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		        <span class="visually-hidden">Previous</span>
+	        </button>
+	        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+		        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		        <span class="visually-hidden">Next</span>
+	        </button>
         </div>
     </div>
     <div class="Container-2 d-flex justify-content-center flex-column">
+
+        
+
+
         <div class="d-flex">
             <div class="d-flex flex-column container-primary-section">
                 <span class="text-light title-sizing">Acerca del</span> 
@@ -93,6 +147,27 @@
         <img style="width:100%; height:300px" src="https://media.istockphoto.com/id/1161556810/es/v%C3%ADdeo/moverse-detr%C3%A1s-de-las-sillas-en-abstract-cinema-hall-con-pantalla-negra-sin-costuras-looped.jpg?s=640x640&k=20&c=MN_XiwNvNbZXKE4I_k5FBbi7bHxYkS5DNHabhcoJBGU="/>
     </div>
 </div>
+
+@code {
+    const string carouselName = "carouselExampleIndicators"; // NOTE: the ID of the carousel
+    int count = 1;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        object[] args = { carouselName };
+        await JSRuntime.InvokeVoidAsync("startCarousel", args); // NOTE: call JavaScript function with the ID of the carousel
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        if (peliculasService.ListaPeliculas.Count == 0)
+        {
+            await peliculasService.GetListaPeliculas();
+        }
+    }
+
+}
+
+
+
 <style>
     *{
         color:#535353;
@@ -111,7 +186,6 @@
     .portada-container{
         display:flex;
         justify-content:center;
-        padding-top:40px;
     }
     .col{
         display:flex;
@@ -206,13 +280,24 @@
     }
     @@keyframes slide-right{
         0%{
-            transform:translateX(-200px);
+            transform:translateY(-200px);
             opacity:0;
         }
         100%{
-            transform:translateX(0px);
+            transform:translateY(0px);
             opacity:1;
         }
+    }
+    .car-image-index{
+        z-index:-1;
+    }
+    .carousel-item2 {
+        height:600px;
+        background-image: linear-gradient(0deg, rgba(0,0,0,0.9108018207282913) 0%, rgba(0,0,0,0) 100%),url('https://i.pinimg.com/originals/8f/00/c7/8f00c71b3e8433a363de09b1551087ad.png');
+    }
+    .position-portada-text{
+        left: 200px;
+        top: 200px
     }
 }
 </style>
