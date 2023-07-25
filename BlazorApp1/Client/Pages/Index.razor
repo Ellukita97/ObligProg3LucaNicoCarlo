@@ -8,70 +8,58 @@
 
 <div>
     <div class="portada-container slide-right">
-        <!-- NOTE: the data-bs- attributes added as per the Bootstrap v5.1 instructions -->
         <div id="@carouselName" class="carousel slide" data-bs-ride="carousel" data-bs-wrap="true" data-bs-interval="60000" data-bs-pause="false">
-	        <div class="carousel-indicators">
-                
-		        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                @for (int i = 1; i <= count; i++)
-                {
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" aria-label="Slide @i+1"></button>
-                }
-                
-	        </div>
-	        <div class="carousel-inner carousel-item2 ">
+            <div class="carousel-inner carouselMain">
                 @foreach (Pelicula item in peliculasService.ListaPeliculas)
                 {
                     if (item.PeliculaUrlPortada != "" && item.PeliculaUrlPortada != null)
                     {
                         if (count == 1)
                         {
-                        <div class="carousel-item active">
-			                <img src="@item.PeliculaUrlPortada" class="d-block w-100 car-image-index" alt="...">
-                            <div class="position-absolute position-portada-text d-flex flex-column">
-                                <span class="Title-secundary">Destacado</span>
-                                <span class="Title-primary scale-up-vertical-center">@item.Nombre</span>
-                                <span class="desscription">Recomendado</span>
-                            </div>
+                            <div class="carousel-item active">
+                                <img src="@item.PeliculaUrlPortada" class="d-block w-100 car-image-index imageCarrousel" alt="...">
+                                <div class="position-absolute position-portada-text d-flex flex-column">
+                                    <span class="Title-secundary">Destacado</span>
+                                    <span class="Title-primary scale-up-vertical-center">@item.Nombre</span>
+                                    <span class="Title-secundary">@item.Sinopsis</span>
+                                    
+                                </div>
                             </div>
                         }
                         else
                         {
                             <div class="carousel-item">
-			                    <img src="@item.PeliculaUrlPortada" class="d-block w-100 car-image-index" alt="...">
+                                <img src="@item.PeliculaUrlPortada" class="d-block w-100 car-image-index imageCarrousel" alt="...">
                                 <div class="position-absolute position-portada-text d-flex flex-column">
                                     <span class="Title-secundary">Destacado</span>
                                     <span class="Title-primary scale-up-vertical-center">@item.Nombre</span>
-                                    <span class="desscription">Recomendado</span>
+                                    <span class="Title-secundary">@item.Sinopsis</span>
+                                   
                                 </div>
-		                    </div>      
+                            </div>
                         }
                         count++;
 
-                                     
+
                     }
 
                 }
-	        </div>
-	        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-		        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		        <span class="visually-hidden">Previous</span>
-	        </button>
-	        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-		        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		        <span class="visually-hidden">Next</span>
-	        </button>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
     </div>
     <div class="Container-2 d-flex justify-content-center flex-column">
-
-        
-
-
         <div class="d-flex">
             <div class="d-flex flex-column container-primary-section">
-                <span class="text-light title-sizing">Acerca del</span> 
-                <span class="text-light title-sizing title">Proyecto</span> 
+                <span class="text-light title-sizing">Acerca del</span>
+                <span class="text-light title-sizing title">Proyecto</span>
             </div>
             <div class="container-segundary-section">
                 <div>
@@ -94,7 +82,7 @@
                     <p>
                         Si el usuario es Administrador, podrá agregar peliculas
                     </p>
-                    
+
                 </div>
             </div>
         </div>
@@ -103,9 +91,9 @@
             <br />
             <br />
             <p>
-               La idea de la web nace de una aplicación de escritorio y web de nombre "Stremio", una aplicacion de streaming de torrents en la cual
-               basamos nuestra idea para el proyecto, pero siendo esta una página de un cine inevitablemente agregamos proyecciones a las peliculas
-              
+                La idea de la web nace de una aplicación de escritorio y web de nombre "Stremio", una aplicacion de streaming de torrents en la cual
+                basamos nuestra idea para el proyecto, pero siendo esta una página de un cine inevitablemente agregamos proyecciones a las peliculas
+
             </p>
         </div>
         <div class="d-flex justify-content-center flex-column">
@@ -126,35 +114,37 @@
                     <div>
                         <p>Nicolás Villegas </p>
                     </div>
-                    
+
                 </div>
                 <div class="col">
-                    
+
                     <div class="squere-1">
                         <img class="Imagen-Square" src="aang.png" />
                     </div>
                     <div>
                         <p>Carlos Fernández</p>
                     </div>
-                      
-                    
+
+
                 </div>
-                
+
             </div>
         </div>
     </div>
     <div>
-        <img style="width:100%; height:300px" src="https://media.istockphoto.com/id/1161556810/es/v%C3%ADdeo/moverse-detr%C3%A1s-de-las-sillas-en-abstract-cinema-hall-con-pantalla-negra-sin-costuras-looped.jpg?s=640x640&k=20&c=MN_XiwNvNbZXKE4I_k5FBbi7bHxYkS5DNHabhcoJBGU="/>
+        <img style="width:100%; height:300px" src="https://media.istockphoto.com/id/1161556810/es/v%C3%ADdeo/moverse-detr%C3%A1s-de-las-sillas-en-abstract-cinema-hall-con-pantalla-negra-sin-costuras-looped.jpg?s=640x640&k=20&c=MN_XiwNvNbZXKE4I_k5FBbi7bHxYkS5DNHabhcoJBGU=" />
     </div>
 </div>
 
 @code {
-    const string carouselName = "carouselExampleIndicators"; // NOTE: the ID of the carousel
+    const string carouselName = "carouselExampleIndicators"; 
+
     int count = 1;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         object[] args = { carouselName };
-        await JSRuntime.InvokeVoidAsync("startCarousel", args); // NOTE: call JavaScript function with the ID of the carousel
+        await JSRuntime.InvokeVoidAsync("startCarousel", args); 
     }
     protected override async Task OnInitializedAsync()
     {
@@ -169,135 +159,160 @@
 
 
 <style>
-    *{
-        color:#535353;
+    * {
+        color: #535353;
     }
 
-    .cine{
+    .cine {
         display: flex;
-        justify-content:space-between;
+        justify-content: space-between;
         border: solid white;
     }
-    .Imagen-Square{
-        width:inherit;
-        height:inherit;
-    }
-    
-    .portada-container{
+    .carouselMain{
         display:flex;
-        justify-content:center;
+        align-items:center;
+        width:100vw !important;
+        height:600px !important;
     }
-    .col{
-        display:flex;
-        flex-direction:column;
-        text-align:center;
-        justify-content:center;
+    .Imagen-Square {
+        width: inherit;
+        height: inherit;
     }
-    .Img-portada{
+    .imageCarrousel{
+        height: 100%;
+        object-fit: cover;
+    }
+    .portada-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .col {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+    }
+    .Img-portada {
         background-image: linear-gradient(0deg, rgba(0,0,0,0.9108018207282913) 0%, rgba(0,0,0,0) 100%),url('https://i.pinimg.com/originals/8f/00/c7/8f00c71b3e8433a363de09b1551087ad.png');
-        background-repeat:no-repeat;
-        background-size:cover;   
-        border-radius:10px;
-        width:90vw;
-        height:63vh;
-         -webkit-box-reflect: below -15px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(90%, transparent), to(white));
-         padding:300px 0px 40px 100px;
-         box-sizing:border-box;
-         z-index:-1;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 10px;
+        width: 90vw;
+        height: 63vh;
+        -webkit-box-reflect: below -15px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(90%, transparent), to(white));
+        padding: 300px 0px 40px 100px;
+        box-sizing: border-box;
+        z-index: -1;
     }
-    .Container-2{
-        display:flex;
-        background-color:black;
-        margin-top:200px;
-        width:100%;
-        z-index:100;
-        padding:0px 300px 100px 300px;
+
+    .Container-2 {
+        display: flex;
+        background-color: black;
+        margin-top: 200px;
+        width: 100%;
+        z-index: 100;
+        padding: 0px 300px 100px 300px;
     }
-    .Title-secundary{
-        font-size:40px;
-        position:relative;
-        top:20px;
-        left:-20px;
+
+    .Title-secundary {
+        font-size: 40px;
+        position: relative;
+        top: 20px;
+        left: -20px;
         text-shadow: 1px 1px 2px black;
     }
-    .Title-primary{
-        font-size:120px;
-        color:white;
+
+    .Title-primary {
+        font-size: 120px;
+        color: white;
         text-shadow: 1px 1px 2px black;
     }
-    .desscription{
-        font-size:40px;
-        margin-left:40px;
-        position:relative;
-        top:-40px;
+
+    .desscription {
+        font-size: 40px;
+        margin-left: 40px;
+        position: relative;
+        top: -40px;
         text-shadow: 1px 1px 2px black;
     }
-    .title-sizing{
-        font-size:60px;
+
+    .title-sizing {
+        font-size: 60px;
     }
-    .title{
-        font-weight:bold;
+
+    .title {
+        font-weight: bold;
     }
-    .container-primary-section{
-        width:700px;
-        padding-right:40px;
-        box-sizing:border-box;
+
+    .container-primary-section {
+        width: 700px;
+        padding-right: 40px;
+        box-sizing: border-box;
     }
-    .container-segundary-section{
-        display:flex;
+
+    .container-segundary-section {
+        display: flex;
         border: 3px solid #0066ff;
-        margin-left:40px;
-        box-sizing:border-box;
+        margin-left: 40px;
+        box-sizing: border-box;
         height: 310px;
     }
-    .container-segundary-section div{
-        margin:30px;
+
+        .container-segundary-section div {
+            margin: 30px;
+        }
+
+    .text-container-center {
+        padding: 100px 300px 50px 300px;
     }
-    .text-container-center{
-        padding:100px 300px 50px 300px;
-    }
-    .squere-1{
-        margin-top:50px;
-        height:300px;
-        width:300px;
+
+    .squere-1 {
+        margin-top: 50px;
+        height: 300px;
+        width: 300px;
         display: flex;
         align-items: center;
-        align-self:center;
+        align-self: center;
     }
-    .scale-up-vertical-center{
-        animation:scale-up-vertical-center 0.4s
-    } 
-    @@keyframes scale-up-vertical-center{
-        0%{
-            transform:scaleY(.2)
-        }
-        100%{
-            transform:scaleY(1)
-        }
+
+    .scale-up-vertical-center {
+        animation: scale-up-vertical-center 0.4s
     }
-    .slide-right{
-        animation:slide-right 0.4s linear both
-    }
-    @@keyframes slide-right{
-        0%{
-            transform:translateY(-200px);
-            opacity:0;
+
+    @@keyframes scale-up-vertical-center {
+        0% {
+            transform: scaleY(.2)
         }
-        100%{
-            transform:translateY(0px);
-            opacity:1;
+
+        100% {
+            transform: scaleY(1)
         }
     }
-    .car-image-index{
-        z-index:-1;
+
+    .slide-right {
+        animation: slide-right 0.4s linear both
     }
-    .carousel-item2 {
-        height:600px;
-        background-image: linear-gradient(0deg, rgba(0,0,0,0.9108018207282913) 0%, rgba(0,0,0,0) 100%),url('https://i.pinimg.com/originals/8f/00/c7/8f00c71b3e8433a363de09b1551087ad.png');
+
+    @@keyframes slide-right {
+        0% {
+            transform: translateY(-200px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(0px);
+            opacity: 1;
+        }
     }
-    .position-portada-text{
+
+    .car-image-index {
+        z-index: -1;
+    }
+    .position-portada-text {
         left: 200px;
-        top: 200px
+        top: 300px
     }
-}
+
+    }
 </style>
