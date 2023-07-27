@@ -1,8 +1,10 @@
 ﻿@page "/Carrito"
 @using BlazorApp1.Shared
+@using BlazorApp1.Client.Services;
 @using Microsoft.AspNetCore.Authorization;
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@inject PeliculasService peliculasService
 
 @attribute [Authorize]
 
@@ -12,11 +14,15 @@
         <div class="col-ig-4 border d-flex">
             <div class="container-card">
                 <span class="title">Movie ticket</span>
-                <small>you have 1 item in you cart</small>
+                <small>you have @peliculasService.CarritoPeliculas.Count item in you cart</small>
+
+                @foreach (var item in peliculasService.CarritoPeliculas)
+                {
+
                 <div class="card-cart-item">
                     <div>
-                        <img style="height:70px;width:50px;" src="https://vice-press.com/cdn/shop/products/blade-runner-2049-matt-ferguson-editions-poster.jpg?v=1666719656&width=1100"/>
-                        <span>Blade runner 2049</span>
+                        <img style="height:70px;width:50px;" src="@item.PeliculaUrlImagen"/>
+                        <span>@item.Nombre</span>
 
                     </div>
                     <div>
@@ -26,6 +32,10 @@
                     <span>$500</span>
                     <a style="text-decoration:none" class="oi oi-trash" aria-hidden="true"></a>
                 </div>
+                }
+                
+
+
             </div>
             <div class="container-tarjeta">
                 <span>Card Details</span>
@@ -56,7 +66,11 @@
                         <span>$500</span>
                     </div>
                 </div>
+                <div class="container-button">
+                    <button class="button-23" role="button">Comprar</button>
+                </div>
             </div>
+
         </div>
 </div>
 <style>
@@ -73,6 +87,8 @@
         display:flex;
         flex-direction:column;
         padding:30px;
+        max-height: 700px;
+        overflow-y: scroll;
     }
     .title{
         font-size:30px;
@@ -103,4 +119,52 @@
         margin-top:20px;
         padding-top:20px;
     }
+    .container-button{
+        display:flex;
+        justify-content:center;
+    }
+    .button-23 {
+      background-color: #FFFFFF;
+      border: 1px solid #222222;
+      border-radius: 8px;
+      box-sizing: border-box;
+      color: #222222;
+      cursor: pointer;
+      display: inline-block;
+      font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 20px;
+      margin: 0;
+      outline: none;
+      padding: 13px 23px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      touch-action: manipulation;
+      transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+      user-select: none;
+      -webkit-user-select: none;
+      width: 100%;
+    }
+
+    .button-23:focus-visible {
+      box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+      transition: box-shadow .2s;
+    }
+
+    .button-23:active {
+      background-color: #F7F7F7;
+      border-color: #000000;
+      transform: scale(.96);
+    }
+
+    .button-23:disabled {
+      border-color: #DDDDDD;
+      color: #DDDDDD;
+      cursor: not-allowed;
+      opacity: 1;
+    }
+    
 </style>
+

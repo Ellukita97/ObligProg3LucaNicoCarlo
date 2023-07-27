@@ -39,6 +39,7 @@ namespace BlazorApp1.Server.Controllers
                 return NotFound();
             }
         }
+
         [HttpGet("{nombre}")]
         public async Task<ActionResult<List<Pelicula>>> GetPeliculasPorNombre(string nombre)
         {
@@ -52,6 +53,7 @@ namespace BlazorApp1.Server.Controllers
                 return NotFound();
             }
         }
+
         [HttpGet("byid/{id}")]
         public async Task<ActionResult<Pelicula>> GetPeliculasPorId(int id)
         {

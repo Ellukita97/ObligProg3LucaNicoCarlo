@@ -79,6 +79,7 @@
 </div>
 @code{
     Pelicula PeliculaCreada = new();
+
     bool UrlImageValid = false;
     //@bind="PeliculaCreada.PeliculaUrlImagen"
     private async Task AgregarPelicula()
@@ -88,6 +89,7 @@
             if (UrlImageValid)
             {
                 PeliculaCreada.PeliculaUrlPortada = PeliculaCreada.PeliculaUrlPortada == null ? "" : PeliculaCreada.PeliculaUrlPortada;
+
                 var res = await peliculasService.PostPelicula(PeliculaCreada);
                 if (res.IsSuccessStatusCode)
                 {

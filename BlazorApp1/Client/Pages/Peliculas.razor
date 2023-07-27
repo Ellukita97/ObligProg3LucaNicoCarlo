@@ -1,6 +1,7 @@
 ﻿@page "/peliculas"
 @using BlazorApp1.Client.Services;
 @using BlazorApp1.Shared
+@using Microsoft.AspNetCore.Components.Authorization
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject PeliculasService peliculasService
@@ -12,13 +13,37 @@
 @if (peliculasService.ListaPeliculas.Count==0 || generosService.ListaGeneros.Count==0)
 {
     <div class="loading">
-        <div class="spinner-border  text-light" role="status">
-        </div>
+        <div class="spinner-border  text-light" role="status" />
     </div>
 }
 else
 {
     <div class="Maincontainer">
+        <AuthorizeView>
+            <Authorized>
+                @if (PopUp)
+                {
+                <div class="container-asiento-proyec scale-up-top">
+                    <div style="text-align:right;">
+                        <a style="text-decoration:none" @onclick="() => PopUp = !PopUp" class="oi oi-x text-white icon-navar" aria-hidden="true"></a>
+                    </div>
+                    <h1 class="text-white">Elija un asiento</h1>
+                    <div class="asiento-container">
+                        @for (int i = 0; i < asientos.Length; i++)
+                        {
+
+                            <div class="asiento @(asientos[i]==true?"":"asientoLibre")"@onclick="AddPeliculaCarrito">
+                                @i
+                                        
+                            </div>
+
+
+                        }
+                    </div>
+                </div>
+                }
+            </Authorized>
+        </AuthorizeView>
         <div>
             <div>
                 <nav class="flex-column Genero-container">
@@ -69,7 +94,7 @@ else
                             <span>Proyecciones</span>
                             @foreach (Proyeccion unaP in proyeccionesService.ListaProyecciones)
                             {
-                                <div class="Proyecciones">
+                                <div class="Proyecciones" @onclick="HandlePopUpProy">
                                     <span>Proyeccion: </span>
                                     <span>Fecha: @unaP.FechaHora.ToString("dd/MM/yyyy")</span>
                                     <span>Hora: @unaP.FechaHora.ToString("t")</span>
@@ -93,6 +118,21 @@ else
 }
 
 @code {
+    bool PopUp = false;
+
+    bool[] asientos = new bool[19];
+
+    private void HandlePopUpProy()
+    {
+        PopUp = true;
+    }
+    private async Task AddPeliculaCarrito()
+    {
+        int id = peliculasService.PeliculaSeleccionada.IdPelicula;
+        await peliculasService.GetPeliculaPorIdCarrito(id);
+
+    }
+
     private async Task SeleccionarPelicula (int id)
     {
         try
@@ -136,6 +176,45 @@ else
 
 
 <style>
+    .container-asiento-proyec{
+        position:fixed;
+        display:flex;
+        flex-direction:column;
+        width:600px;
+        background-color:black;
+        opacity: .97;
+        z-index:300;
+        left: 0;
+        right: 0;
+        margin: auto;
+        padding: 20px;
+    }
+    .asiento-container{
+        display:flex;
+        flex-wrap:wrap;
+    }
+    .asiento{
+        display:flex;
+        justify-content:center;
+        align-items: center;
+        height:70px;
+        width:70px;
+        margin: 5px;
+        background-image:url("https://media.istockphoto.com/id/829590662/photo/emoty-cinema-armchair.jpg?s=612x612&w=0&k=20&c=vGn4SWnYJWpJ-7YfQGFKJ-HzJiK4mhLm-jrmyIskepg=");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: wheat;
+        font-size: 25px;
+        cursor:pointer;
+    }
+    .asiento:active{
+        filter: hue-rotate(0deg);
+    }
+    .asientoLibre{
+        filter: hue-rotate(120deg);
+        
+    }
     .Peliculas{
         height: 400px;
         width: 250px;
@@ -260,6 +339,17 @@ else
         }
         100%{
             transform:scaleY(1)
+        }
+    }
+    .scale-up-top{
+        animation:scale-up-top 0.4s; 
+    } 
+    @@keyframes scale-up-top{
+        0%{
+            transform:scale(.5);transform-origin:center top
+        }
+        100%{
+            transform:scale(1);transform-origin:center top
         }
     }
 

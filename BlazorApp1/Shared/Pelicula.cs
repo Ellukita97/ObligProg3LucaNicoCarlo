@@ -16,8 +16,10 @@ namespace BlazorApp1.Shared
 
         [Required(ErrorMessage = "Campo requerido")]
         public string? Nombre { get; set; }
-        [Required(ErrorMessage="Campo requerido")]
+
+        [Required(ErrorMessage = "Campo requerido")]
         public string? Sinopsis { get; set; }
+
         [Required(ErrorMessage = "Campo requerido")]
         [Range(0, 10)]
         public float Clasificacion { get; set; }

@@ -10,6 +10,8 @@ namespace BlazorApp1.Client.Services
 
         private HttpClient? _httpClient;
 
+        public List<Pelicula> CarritoPeliculas = new List<Pelicula>();
+
         public List<Pelicula> ListaPeliculas = new List<Pelicula>();
 
         public Pelicula PeliculaSeleccionada = new Pelicula();
@@ -75,6 +77,7 @@ namespace BlazorApp1.Client.Services
             try
             {
                 _httpClient = _httpClientFactory.CreateClient();
+
                 var res = await _httpClient.PostAsJsonAsync("https://localhost:7200/api/peliculas/Post", pelicula);
                 DataChanged?.Invoke();
                 return res;
@@ -119,13 +122,21 @@ namespace BlazorApp1.Client.Services
             {
 
             }
+        }
+        public async Task GetPeliculaPorIdCarrito(int id)
+        {
+            try
+            {
+                _httpClient = _httpClientFactory.CreateClient();
+                var Pelicula = await _httpClient.GetFromJsonAsync<Pelicula>($"https://localhost:7200/api/peliculas/byid/{id}");
+                CarritoPeliculas.Add(Pelicula);
+            }
+            catch (Exception ex)
+            {
 
-
+            }
 
         }
-
-
-
 
     }
 
